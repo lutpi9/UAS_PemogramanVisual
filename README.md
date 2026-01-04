@@ -1,3 +1,14 @@
+👩‍💻 Pengembang
+
+| Keterangan | Detail |
+|-------------|---------|
+| **Nama** | Lutpiah Ainus Shiddik |
+| **NIM** | 312310474 |
+| **Kelas** | TI.23.A.5 |
+| **Mata Kuliah** | Pemrograman Visual (Desktop) |
+| **Proyek** | Ujian Akhir Semester (UAS) |
+| **Link YouTube** | https://youtu.be/bF75aXlileI?si=GmsStKTdxpMt-KCK |
+
 # 🍽️ LupyCanteen
 ### Web-Based Canteen Management System
 
