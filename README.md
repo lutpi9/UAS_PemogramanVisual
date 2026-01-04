@@ -86,7 +86,7 @@ Digunakan untuk data fleksibel dan dinamis:
 ### 1️⃣ Clone Repository
 ```bash
 git clone https://github.com/username/LupyCanteen.git
----
+```
 
 ### 2️⃣ Buka Project
 
@@ -108,7 +108,7 @@ git clone https://github.com/username/LupyCanteen.git
 dotnet restore
 dotnet build
 dotnet run
----
+```
 
 🔹 **Alternatif Menjalankan Aplikasi**
 
