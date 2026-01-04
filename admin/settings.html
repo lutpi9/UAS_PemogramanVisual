@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan - LupyCanteen Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">🍱</span>
+                    <span class="logo-text">LupyCanteen</span>
+                </div>
+                <div class="admin-info">
+                    <div class="admin-avatar">👤</div>
+                    <div class="admin-details">
+                        <div class="admin-name" id="adminName">Admin</div>
+                        <div class="admin-role" id="adminRole">Administrator</div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <span class="nav-icon">📊</span>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="menu-management.html" class="nav-link">
+                            <span class="nav-icon">🍽️</span>
+                            <span class="nav-text">Manajemen Menu</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="user-management.html" class="nav-link">
+                            <span class="nav-icon">👥</span>
+                            <span class="nav-text">Manajemen Karyawan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="order-management.html" class="nav-link">
+                            <span class="nav-icon">📋</span>
+                            <span class="nav-text">Manajemen Pesanan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="reports.html" class="nav-link">
+                            <span class="nav-icon">📈</span>
+                            <span class="nav-text">Laporan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="settings.html" class="nav-link active">
+                            <span class="nav-icon">⚙️</span>
+                            <span class="nav-text">Pengaturan</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Pengaturan</h1>
+                    <p class="page-subtitle">Konfigurasi sistem dan preferensi aplikasi</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-primary" onclick="saveAllSettings()">
+                        <span>💾</span>
+                        Simpan Semua
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- Alert Container -->
+                <div id="alertContainer"></div>
+
+                <!-- Settings Tabs -->
+                <div class="settings-tabs">
+                    <button class="tab-btn active" onclick="showTab('general')">
+                        <span>🏢</span>
+                        Umum
+                    </button>
+                    <button class="tab-btn" onclick="showTab('business')">
+                        <span>🏪</span>
+                        Bisnis
+                    </button>
+                    <button class="tab-btn" onclick="showTab('system')">
+                        <span>⚙️</span>
+                        Sistem
+                    </button>
+                    <button class="tab-btn" onclick="showTab('security')">
+                        <span>🔒</span>
+                        Keamanan
+                    </button>
+                    <button class="tab-btn" onclick="showTab('backup')">
+                        <span>💾</span>
+                        Backup
+                    </button>
+                </div>
+
+                <!-- General Settings -->
+                <div id="generalTab" class="tab-content active">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Informasi Umum</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="generalForm">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Nama Aplikasi</label>
+                                        <input type="text" id="appName" class="form-input" value="LupyCanteen">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Versi</label>
+                                        <input type="text" id="appVersion" class="form-input" value="1.0.0" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Deskripsi</label>
+                                    <textarea id="appDescription" class="form-textarea">Sistem manajemen kantin digital untuk LupyCanteen</textarea>
+                                </div>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Bahasa Default</label>
+                                        <select id="defaultLanguage" class="form-select">
+                                            <option value="id">Bahasa Indonesia</option>
+                                            <option value="en">English</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Zona Waktu</label>
+                                        <select id="timezone" class="form-select">
+                                            <option value="Asia/Jakarta">WIB (UTC+7)</option>
+                                            <option value="Asia/Makassar">WITA (UTC+8)</option>
+                                            <option value="Asia/Jayapura">WIT (UTC+9)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Settings -->
+                <div id="businessTab" class="tab-content">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Informasi Bisnis</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="businessForm">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Nama Bisnis</label>
+                                        <input type="text" id="businessName" class="form-input" value="LupyCanteen">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Email Bisnis</label>
+                                        <input type="email" id="businessEmail" class="form-input" value="info@lupycanteen.com">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Telepon</label>
+                                        <input type="tel" id="businessPhone" class="form-input" value="+62 123 456 789">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Website</label>
+                                        <input type="url" id="businessWebsite" class="form-input" value="https://lupycanteen.com">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Alamat</label>
+                                    <textarea id="businessAddress" class="form-textarea">Jl. Raya Margamulya, Telukjambe Barat</textarea>
+                                </div>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Jam Operasional (Buka)</label>
+                                        <input type="time" id="openTime" class="form-input" value="08:00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Jam Operasional (Tutup)</label>
+                                        <input type="time" id="closeTime" class="form-input" value="17:00">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Mata Uang</label>
+                                    <select id="currency" class="form-select">
+                                        <option value="IDR">Rupiah (IDR)</option>
+                                        <option value="USD">US Dollar (USD)</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Settings -->
+                <div id="systemTab" class="tab-content">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Konfigurasi Sistem</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="systemForm">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <input type="checkbox" id="enableNotifications" checked>
+                                        Aktifkan Notifikasi
+                                    </label>
+                                    <small class="form-help">Tampilkan notifikasi untuk pesanan baru dan update status</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <input type="checkbox" id="enableAutoBackup" checked>
+                                        Backup Otomatis
+                                    </label>
+                                    <small class="form-help">Backup data secara otomatis setiap hari</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <input type="checkbox" id="enableMaintenanceMode">
+                                        Mode Maintenance
+                                    </label>
+                                    <small class="form-help">Nonaktifkan akses publik untuk maintenance</small>
+                                </div>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Maksimal Upload File (MB)</label>
+                                        <input type="number" id="maxFileSize" class="form-input" value="5" min="1" max="50">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Session Timeout (Menit)</label>
+                                        <input type="number" id="sessionTimeout" class="form-input" value="60" min="15" max="480">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Log Level</label>
+                                    <select id="logLevel" class="form-select">
+                                        <option value="error">Error</option>
+                                        <option value="warning">Warning</option>
+                                        <option value="info" selected>Info</option>
+                                        <option value="debug">Debug</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Settings -->
+                <div id="securityTab" class="tab-content">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Pengaturan Keamanan</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="securityForm">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <input type="checkbox" id="enableTwoFactor">
+                                        Aktifkan Two-Factor Authentication
+                                    </label>
+                                    <small class="form-help">Tambahan keamanan dengan kode verifikasi</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <input type="checkbox" id="forcePasswordChange" checked>
+                                        Paksa Ganti Password Berkala
+                                    </label>
+                                    <small class="form-help">User harus mengganti password setiap 90 hari</small>
+                                </div>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Minimal Panjang Password</label>
+                                        <input type="number" id="minPasswordLength" class="form-input" value="6" min="4" max="20">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Maksimal Login Gagal</label>
+                                        <input type="number" id="maxLoginAttempts" class="form-input" value="5" min="3" max="10">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">IP Whitelist</label>
+                                    <textarea id="ipWhitelist" class="form-textarea" placeholder="192.168.1.1&#10;10.0.0.1"></textarea>
+                                    <small class="form-help">Daftar IP yang diizinkan mengakses admin (kosongkan untuk semua IP)</small>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backup Settings -->
+                <div id="backupTab" class="tab-content">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Backup & Restore</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="backup-section">
+                                <h4>Backup Manual</h4>
+                                <p>Buat backup data secara manual</p>
+                                <div class="backup-actions">
+                                    <button class="btn btn-primary" onclick="createBackup()">
+                                        <span>💾</span>
+                                        Buat Backup
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="downloadBackup()">
+                                        <span>📥</span>
+                                        Download Backup
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="backup-section">
+                                <h4>Restore Data</h4>
+                                <p>Pulihkan data dari file backup</p>
+                                <div class="form-group">
+                                    <input type="file" id="backupFile" class="form-input" accept=".json,.sql">
+                                    <button class="btn btn-warning" onclick="restoreBackup()">
+                                        <span>🔄</span>
+                                        Restore
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="backup-section">
+                                <h4>Riwayat Backup</h4>
+                                <div id="backupHistory">
+                                    <div class="loading">Memuat riwayat backup...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Information -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Informasi Sistem</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="system-info">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Server Status:</label>
+                                    <span class="status-badge status-completed">Online</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Database:</label>
+                                    <span>MongoDB</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Uptime:</label>
+                                    <span id="systemUptime">-</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Last Backup:</label>
+                                    <span id="lastBackup">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin-script.js"></script>
+    <script>
+        // Settings Variables
+        let currentSettings = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadSettings();
+            loadSystemInfo();
+            loadBackupHistory();
+        });
+
+        function checkAuth() {
+            const userData = localStorage.getItem('lupycanteen_user');
+            if (!userData) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const user = JSON.parse(userData);
+            if (user.role !== 'Admin') {
+                alert('Akses ditolak. Hanya Admin yang dapat mengakses pengaturan.');
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // Update admin info
+            document.getElementById('adminName').textContent = user.fullName;
+            document.getElementById('adminRole').textContent = user.role;
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        async function loadSettings() {
+            try {
+                // Load settings from localStorage or API
+                const savedSettings = getFromLocalStorage('lupycanteen_settings', {});
+                currentSettings = {
+                    // General
+                    appName: 'LupyCanteen',
+                    appVersion: '1.0.0',
+                    appDescription: 'Sistem manajemen kantin digital untuk LupyCanteen',
+                    defaultLanguage: 'id',
+                    timezone: 'Asia/Jakarta',
+                    
+                    // Business
+                    businessName: 'LupyCanteen',
+                    businessEmail: 'info@lupycanteen.com',
+                    businessPhone: '+62 123 456 789',
+                    businessWebsite: 'https://lupycanteen.com',
+                    businessAddress: 'Jl. Raya Margamulya, Telukjambe Barat',
+                    openTime: '08:00',
+                    closeTime: '17:00',
+                    currency: 'IDR',
+                    
+                    // System
+                    enableNotifications: true,
+                    enableAutoBackup: true,
+                    enableMaintenanceMode: false,
+                    maxFileSize: 5,
+                    sessionTimeout: 60,
+                    logLevel: 'info',
+                    
+                    // Security
+                    enableTwoFactor: false,
+                    forcePasswordChange: true,
+                    minPasswordLength: 6,
+                    maxLoginAttempts: 5,
+                    ipWhitelist: '',
+                    
+                    ...savedSettings
+                };
+
+                populateSettings();
+            } catch (error) {
+                console.error('Error loading settings:', error);
+                showAlert('error', 'Gagal memuat pengaturan');
+            }
+        }
+
+        function populateSettings() {
+            // Populate all form fields with current settings
+            Object.keys(currentSettings).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (element.type === 'checkbox') {
+                        element.checked = currentSettings[key];
+                    } else {
+                        element.value = currentSettings[key];
+                    }
+                }
+            });
+        }
+
+        async function saveAllSettings() {
+            try {
+                // Collect all settings from forms
+                const newSettings = {};
+                
+                // General settings
+                newSettings.appName = document.getElementById('appName').value;
+                newSettings.appDescription = document.getElementById('appDescription').value;
+                newSettings.defaultLanguage = document.getElementById('defaultLanguage').value;
+                newSettings.timezone = document.getElementById('timezone').value;
+                
+                // Business settings
+                newSettings.businessName = document.getElementById('businessName').value;
+                newSettings.businessEmail = document.getElementById('businessEmail').value;
+                newSettings.businessPhone = document.getElementById('businessPhone').value;
+                newSettings.businessWebsite = document.getElementById('businessWebsite').value;
+                newSettings.businessAddress = document.getElementById('businessAddress').value;
+                newSettings.openTime = document.getElementById('openTime').value;
+                newSettings.closeTime = document.getElementById('closeTime').value;
+                newSettings.currency = document.getElementById('currency').value;
+                
+                // System settings
+                newSettings.enableNotifications = document.getElementById('enableNotifications').checked;
+                newSettings.enableAutoBackup = document.getElementById('enableAutoBackup').checked;
+                newSettings.enableMaintenanceMode = document.getElementById('enableMaintenanceMode').checked;
+                newSettings.maxFileSize = parseInt(document.getElementById('maxFileSize').value);
+                newSettings.sessionTimeout = parseInt(document.getElementById('sessionTimeout').value);
+                newSettings.logLevel = document.getElementById('logLevel').value;
+                
+                // Security settings
+                newSettings.enableTwoFactor = document.getElementById('enableTwoFactor').checked;
+                newSettings.forcePasswordChange = document.getElementById('forcePasswordChange').checked;
+                newSettings.minPasswordLength = parseInt(document.getElementById('minPasswordLength').value);
+                newSettings.maxLoginAttempts = parseInt(document.getElementById('maxLoginAttempts').value);
+                newSettings.ipWhitelist = document.getElementById('ipWhitelist').value;
+
+                // Save to localStorage
+                saveToLocalStorage('lupycanteen_settings', newSettings);
+                currentSettings = newSettings;
+
+                showToast('Pengaturan berhasil disimpan', 'success');
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                showAlert('error', 'Gagal menyimpan pengaturan');
+            }
+        }
+
+        async function loadSystemInfo() {
+            try {
+                // Mock system info - in real app, get from API
+                document.getElementById('systemUptime').textContent = '5 hari 12 jam';
+                document.getElementById('lastBackup').textContent = formatDateTime(new Date());
+            } catch (error) {
+                console.error('Error loading system info:', error);
+            }
+        }
+
+        async function loadBackupHistory() {
+            try {
+                // Mock backup history - in real app, get from API
+                const backups = [
+                    { id: 1, date: new Date(), size: '2.5 MB', type: 'Auto' },
+                    { id: 2, date: new Date(Date.now() - 86400000), size: '2.3 MB', type: 'Manual' },
+                    { id: 3, date: new Date(Date.now() - 172800000), size: '2.1 MB', type: 'Auto' }
+                ];
+
+                displayBackupHistory(backups);
+            } catch (error) {
+                document.getElementById('backupHistory').innerHTML = '<div class="no-data">Gagal memuat riwayat backup</div>';
+                console.error('Error loading backup history:', error);
+            }
+        }
+
+        function displayBackupHistory(backups) {
+            const html = backups.map(backup => `
+                <div class="backup-item">
+                    <div class="backup-info">
+                        <div class="backup-date">${formatDateTime(backup.date)}</div>
+                        <div class="backup-details">${backup.size} • ${backup.type}</div>
+                    </div>
+                    <div class="backup-actions">
+                        <button class="btn btn-sm btn-secondary" onclick="downloadBackupFile('${backup.id}')">
+                            📥 Download
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteBackupFile('${backup.id}')">
+                            🗑️ Hapus
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('backupHistory').innerHTML = html;
+        }
+
+        async function createBackup() {
+            try {
+                showToast('Membuat backup...', 'info');
+                
+                // Mock backup creation - in real app, call API
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                showToast('Backup berhasil dibuat', 'success');
+                loadBackupHistory();
+            } catch (error) {
+                showAlert('error', 'Gagal membuat backup');
+                console.error('Error creating backup:', error);
+            }
+        }
+
+        function downloadBackup() {
+            // Mock backup download
+            const backupData = {
+                timestamp: new Date().toISOString(),
+                settings: currentSettings,
+                version: '1.0.0'
+            };
+            
+            const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `lupycanteen-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        async function restoreBackup() {
+            const fileInput = document.getElementById('backupFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showAlert('error', 'Pilih file backup terlebih dahulu');
+                return;
+            }
+
+            if (!confirm('Apakah Anda yakin ingin restore data? Ini akan mengganti semua data yang ada.')) {
+                return;
+            }
+
+            try {
+                const text = await file.text();
+                const backupData = JSON.parse(text);
+                
+                // Validate backup data
+                if (!backupData.settings || !backupData.timestamp) {
+                    throw new Error('Format backup tidak valid');
+                }
+                
+                // Restore settings
+                currentSettings = backupData.settings;
+                saveToLocalStorage('lupycanteen_settings', currentSettings);
+                populateSettings();
+                
+                showToast('Data berhasil direstore', 'success');
+            } catch (error) {
+                showAlert('error', 'Gagal restore data: ' + error.message);
+                console.error('Error restoring backup:', error);
+            }
+        }
+
+        function downloadBackupFile(id) {
+            showToast('Mengunduh backup...', 'info');
+            // Mock download - in real app, call API
+        }
+
+        function deleteBackupFile(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus backup ini?')) {
+                showToast('Backup berhasil dihapus', 'success');
+                loadBackupHistory();
+            }
+        }
+    </script>
+
+    <style>
+        .settings-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 16px;
+        }
+
+        .tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .tab-btn:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #A8D8EA 0%, #FFB3D9 100%);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-help {
+            display: block;
+            margin-top: 4px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .backup-section {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .backup-section:last-child {
+            border-bottom: none;
+        }
+
+        .backup-section h4 {
+            margin-bottom: 8px;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .backup-section p {
+            margin-bottom: 16px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .backup-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .backup-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .backup-date {
+            font-weight: 500;
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        .backup-details {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .backup-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .system-info {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-item label {
+            font-weight: 500;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .info-item span {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .settings-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                flex: 1;
+                min-width: 120px;
+                justify-content: center;
+            }
+            
+            .backup-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .backup-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+        }
+    </style>
+</body>
+</html>

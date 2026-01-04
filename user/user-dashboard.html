@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pelanggan - LupyCanteen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="user-style.css?v=20250103&cache=bust">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍱</text></svg>">
+    <!-- jsPDF Library - Reliable CDN with fallback -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNhh/TCPMZ5+W+4gOiJBXlI/zJ/oLMI+I4WaFNJBvhuigzwIzKg5MgB0w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        // Cache busting and logout fix
+        console.log('🔥 USER LOGOUT FIX ACTIVE - Cache Busting Enabled');
+        
+        // Force reload JavaScript with cache busting
+        window.addEventListener('load', function() {
+            console.log('✅ User dashboard loaded with logout fix');
+        });
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="user-header">
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="logo">
+                    <span class="logo-icon">🍱</span>
+                    <div class="logo-text-group">
+                        <span class="logo-text">LupyCanteen</span>
+                        <span class="logo-subtitle">Kantin Sekolah Modern</span>
+                    </div>
+                    <span class="user-badge">PELANGGAN</span>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="search-bar">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M17.5 17.5L12.5 12.5M14.1667 8.33333C14.1667 11.555 11.555 14.1667 8.33333 14.1667C5.11167 14.1667 2.5 11.555 2.5 8.33333C2.5 5.11167 5.11167 2.5 8.33333 2.5C11.555 2.5 14.1667 5.11167 14.1667 8.33333Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <input type="text" placeholder="Cari menu favorit..." id="searchInput" onkeyup="searchMenu()">
+                </div>
+            </div>
+            <div class="header-info">
+                <div class="cart-section">
+                    <button class="cart-btn" onclick="toggleCart()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V17C17 18.1 16.1 19 15 19H9C7.9 19 7 18.1 7 17V13M9 22C9.6 22 10 21.6 10 21S9.6 20 9 20 8 20.4 8 21 8.4 22 9 22ZM20 22C20.6 22 21 21.6 21 21S20.6 20 20 20 19 20.4 19 21 19.4 22 20 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                    <div class="cart-total">
+                        <span class="total-label">Total:</span>
+                        <span class="total-amount" id="cartTotal">Rp 0</span>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Pelanggan</div>
+                        <div class="user-role">Member</div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-refresh" onclick="refreshMenuData()" title="Refresh menu dari database">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M1 4V10H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3.51 15A9 9 0 1 0 6 5L1 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Refresh Menu</span>
+                    </button>
+                    <button class="btn-cleanup-user" onclick="cleanupUserMenu()" title="Hapus menu bermasalah">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M3 6H5H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2C10.5304 2 11.0391 2.21071 11.4142 2.58579C11.7893 2.96086 12 3.46957 12 4V6M15 6V16C15 16.5304 14.7893 17.0391 14.4142 17.4142C14.0391 17.7893 13.5304 18 13 18H7C6.46957 18 5.96086 17.7893 5.58579 17.4142C5.21071 17.0391 5 16.5304 5 16V6H15Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Cleanup</span>
+                    </button>
+                    <button class="btn-orders" onclick="showSection('orders')">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M6 2L3 6V18C3 18.5523 3.44772 19 4 19H16C16.5523 19 17 18.5523 17 18V6L14 2H6Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 6H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 10V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 10V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Pesanan</span>
+                    </button>
+                    <button class="btn-logout" onclick="logout()">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7 17L2 17C1.44772 17 1 16.5523 1 16L1 4C1 3.44772 1.44772 3 2 3L7 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M13 13L16 10L13 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 10L7 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="user-main">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <div class="welcome-content">
+                <div class="welcome-text">
+                    <h1>Selamat Datang, <span id="welcomeName">Pelanggan</span>! 👋</h1>
+                    <p>Nikmati berbagai menu lezat dan sehat dari LupyCanteen. Pesan sekarang dan rasakan kelezatannya!</p>
+                </div>
+                <div class="welcome-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalOrders">0</div>
+                        <div class="stat-label">Total Pesanan</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="favoriteMenu">-</div>
+                        <div class="stat-label">Menu Favorit</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="memberSince">2025</div>
+                        <div class="stat-label">Member Sejak</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <div class="actions-header">
+                <h2>🚀 Aksi Cepat</h2>
+                <div class="actions-subtitle">Pilih apa yang ingin Anda lakukan hari ini</div>
+            </div>
+            <div class="actions-grid">
+                <div class="action-card primary" onclick="showSection('menu')">
+                    <div class="action-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Lihat Menu</div>
+                        <div class="action-desc">Jelajahi berbagai menu lezat yang tersedia</div>
+                    </div>
+                </div>
+                
+                <div class="action-card success" onclick="showSection('orders')">
+                    <div class="action-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                            <path d="M9 11H15M9 15H15M17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3H12.5858C12.851 3 13.1054 3.10536 13.2929 3.29289L19.7071 9.70711C19.8946 9.89464 20 10.149 20 10.4142V19C20 20.1046 19.1046 21 18 21H17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Riwayat Pesanan</div>
+                        <div class="action-desc">Lihat pesanan yang pernah Anda buat</div>
+                    </div>
+                </div>
+                
+                <div class="action-card warning" onclick="showSection('favorites')">
+                    <div class="action-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                            <path d="M20.84 4.61C20.3292 4.099 19.7228 3.69364 19.0554 3.41708C18.3879 3.14052 17.6725 2.99817 16.95 2.99817C16.2275 2.99817 15.5121 3.14052 14.8446 3.41708C14.1772 3.69364 13.5708 4.099 13.06 4.61L12 5.67L10.94 4.61C9.9083 3.5783 8.50903 2.9987 7.05 2.9987C5.59096 2.9987 4.19169 3.5783 3.16 4.61C2.1283 5.6417 1.5487 7.04097 1.5487 8.5C1.5487 9.95903 2.1283 11.3583 3.16 12.39L12 21.23L20.84 12.39C21.351 11.8792 21.7563 11.2728 22.0329 10.6053C22.3095 9.93789 22.4518 9.22248 22.4518 8.5C22.4518 7.77752 22.3095 7.06211 22.0329 6.39467C21.7563 5.72723 21.351 5.1208 20.84 4.61V4.61Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Menu Favorit</div>
+                        <div class="action-desc">Menu yang sering Anda pesan</div>
+                    </div>
+                </div>
+                
+                <div class="action-card info" onclick="showSection('profile')">
+                    <div class="action-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                            <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Profil Saya</div>
+                        <div class="action-desc">Kelola informasi akun Anda</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Section -->
+        <section id="menuSection" class="content-section" style="display: none;">
+            <div class="section-header">
+                <h2>🍽️ Menu LupyCanteen</h2>
+                <button class="btn-back" onclick="showSection('dashboard')">← Kembali</button>
+            </div>
+            <div class="menu-container">
+                <div class="menu-filters">
+                    <button class="filter-btn active" onclick="filterMenu('all')">Semua</button>
+                    <button class="filter-btn" onclick="filterMenu('makanan')">Makanan</button>
+                    <button class="filter-btn" onclick="filterMenu('minuman')">Minuman</button>
+                    <button class="filter-btn" onclick="filterMenu('snack')">Snack</button>
+                </div>
+                <div class="menu-grid" id="menuGrid">
+                    <!-- Menu items will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Orders Section -->
+        <section id="ordersSection" class="content-section" style="display: none;">
+            <div class="section-header">
+                <h2>📋 Riwayat Pesanan</h2>
+                <button class="btn-back" onclick="showSection('dashboard')">← Kembali</button>
+            </div>
+            <div class="orders-container">
+                <div class="orders-list" id="ordersList">
+                    <!-- Orders will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Favorites Section -->
+        <section id="favoritesSection" class="content-section" style="display: none;">
+            <div class="section-header">
+                <h2>❤️ Menu Favorit</h2>
+                <button class="btn-back" onclick="showSection('dashboard')">← Kembali</button>
+            </div>
+            <div class="favorites-container">
+                <div class="favorites-grid" id="favoritesGrid">
+                    <!-- Favorite items will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profileSection" class="content-section" style="display: none;">
+            <div class="section-header">
+                <h2>👤 Profil Saya</h2>
+                <button class="btn-back" onclick="showSection('dashboard')">← Kembali</button>
+            </div>
+            <div class="profile-container">
+                <div class="profile-card">
+                    <div class="profile-avatar">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none">
+                            <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="profile-info">
+                        <h3 id="profileName">Nama Pelanggan</h3>
+                        <p id="profileEmail">email@example.com</p>
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <span class="stat-number" id="profileTotalOrders">0</span>
+                                <span class="stat-label">Total Pesanan</span>
+                            </div>
+                            <div class="profile-stat">
+                                <span class="stat-number" id="profileTotalSpent">Rp 0</span>
+                                <span class="stat-label">Total Belanja</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button class="btn-edit-profile" onclick="editProfile()">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M11.5 2.5L13.5 4.5L5 13H3V11L11.5 2.5Z" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        Edit Profil
+                    </button>
+                    <button class="btn-change-password" onclick="changePassword()">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M5 10V8C5 5.79086 6.79086 4 9 4V4C11.2091 4 13 5.79086 13 8V10M3 10H15C15.5523 10 16 10.4477 16 11V15C16 15.5523 15.5523 16 15 16H3C2.44772 16 2 15.5523 2 15V11C2 10.4477 2.44772 10 3 10Z" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        Ubah Password
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Shopping Cart Modal -->
+    <div id="cartModal" class="cart-modal" style="display: none;">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3>🛒 Keranjang Belanja</h3>
+                <button class="cart-close" onclick="toggleCart()">×</button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <p class="empty-cart">Keranjang masih kosong</p>
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total-section">
+                    <div class="total-line">
+                        <span>Total:</span>
+                        <span id="cartModalTotal">Rp 0</span>
+                    </div>
+                </div>
+                <div class="cart-actions">
+                    <button class="btn-clear-cart" onclick="clearCart()">Kosongkan</button>
+                    <button class="btn-checkout" onclick="checkout()">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Scripts -->
+    <script src="user-script.js?v=20250103&logout=fixed&cache=bust"></script>
+</body>
+</html>

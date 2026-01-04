@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin - LupyCanteen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #A8D8EA 0%, #FFB3D9 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .login-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #A8D8EA;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #A8D8EA 0%, #FFB3D9 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-error {
+            background: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+        }
+
+        .alert-success {
+            background: #efe;
+            color: #3c3;
+            border: 1px solid #cfc;
+        }
+
+        .back-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: #A8D8EA;
+        }
+
+        .loading {
+            display: none;
+            margin-left: 10px;
+        }
+
+        .role-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e1e5e9;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .role-btn.active {
+            border-color: #A8D8EA;
+            background: #f0f8ff;
+            color: #A8D8EA;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <span class="logo-icon">🍱</span>
+            <span class="logo-text">LupyCanteen</span>
+        </div>
+        
+        <h1 class="login-title">Login Admin</h1>
+        <p class="login-subtitle">Masuk ke dashboard admin</p>
+
+        <div class="alert alert-error" id="errorAlert"></div>
+        <div class="alert alert-success" id="successAlert"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-input" id="username" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-input" id="password" required>
+            </div>
+
+            <button type="submit" class="btn-login" id="loginBtn">
+                Login
+                <span class="loading" id="loading">⏳</span>
+            </button>
+        </form>
+
+        <a href="../index.html" class="back-link">← Kembali ke Website</a>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5283/api';
+        
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loading = document.getElementById('loading');
+            
+            // Show loading
+            loginBtn.disabled = true;
+            loading.style.display = 'inline';
+            hideAlerts();
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Save login data
+                    localStorage.setItem('lupycanteen_user', JSON.stringify(result.data));
+                    
+                    showAlert('success', 'Login berhasil! Mengalihkan ke dashboard...');
+                    
+                    // Redirect based on role
+                    setTimeout(() => {
+                        if (result.data.role === 'Admin' || result.data.role === 'Kasir') {
+                            window.location.href = 'dashboard.html';
+                        } else {
+                            window.location.href = '../index.html';
+                        }
+                    }, 1500);
+                } else {
+                    showAlert('error', result.message || 'Login gagal');
+                }
+            } catch (error) {
+                showAlert('error', 'Terjadi kesalahan. Pastikan server berjalan.');
+                console.error('Login error:', error);
+            } finally {
+                loginBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+        
+        function showAlert(type, message) {
+            const alert = document.getElementById(type === 'error' ? 'errorAlert' : 'successAlert');
+            alert.textContent = message;
+            alert.style.display = 'block';
+        }
+        
+        function hideAlerts() {
+            document.getElementById('errorAlert').style.display = 'none';
+            document.getElementById('successAlert').style.display = 'none';
+        }
+
+        // Check if already logged in
+        const userData = localStorage.getItem('lupycanteen_user');
+        if (userData) {
+            const user = JSON.parse(userData);
+            if (user.role === 'Admin' || user.role === 'Kasir') {
+                window.location.href = 'dashboard.html';
+            }
+        }
+    </script>
+</body>
+</html>

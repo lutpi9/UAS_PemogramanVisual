@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontak - LupyCanteen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style-clean-v2.css?v=20250101-CLEAN-FINAL-V3">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🍱</span>
+                <span class="logo-text">LupyCanteen</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="main-app.html" class="nav-link">Beranda</a></li>
+                <li><a href="menu-rapi-clean.html" class="nav-link">Menu</a></li>
+                <li><a href="special.html" class="nav-link">Special</a></li>
+                <li><a href="about.html" class="nav-link">Tentang</a></li>
+                <li><a href="contact.html" class="nav-link active">Kontak</a></li>
+            </ul>
+            <div class="nav-cta">
+                <button class="cart-btn" onclick="window.location.href='main-app.html'">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V17C17 18.1 16.1 19 15 19H9C7.9 19 7 18.1 7 17V13M9 22C9.6 22 10 21.6 10 21S9.6 20 9 20 8 20.4 8 21 8.4 22 9 22ZM20 22C20.6 22 21 21.6 21 21S20.6 20 20 20 19 20.4 19 21 19.4 22 20 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="btn-order" onclick="window.location.href='menu-rapi.html'">Pesan Sekarang</button>
+                <button class="btn-logout" onclick="logoutUser()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M6 14H3C2.44772 14 2 13.5523 2 13V3C2 2.44772 2.44772 2 3 2H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M11 11L14 8L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 8H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contact Hero -->
+    <section class="hero" style="min-height: 70vh;">
+        <div class="hero-background"></div>
+        <div class="container">
+            <div class="hero-content-center">
+                <div class="hero-text-center">
+                    <div class="hero-badge-wrapper">
+                        <span class="hero-badge">📞 Hubungi Kami</span>
+                    </div>
+                    <h1 class="hero-title-center">
+                        Kontak<br>
+                        <span class="gradient-text">LupyCanteen</span>
+                    </h1>
+                    <p class="hero-description-center">
+                        Ada pertanyaan, saran, atau ingin memberikan feedback? Jangan ragu untuk menghubungi kami!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Info -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📍</div>
+                    <h3 class="feature-title">Alamat</h3>
+                    <p class="feature-description">
+                        Jl. Raya Margamulya<br>
+                        Telukjambe Barat<br>
+                        Karawang, Jawa Barat
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📞</div>
+                    <h3 class="feature-title">Telepon</h3>
+                    <p class="feature-description">
+                        <a href="tel:+6221234567" style="color: var(--primary); text-decoration: none;">(021) 123-4567</a><br>
+                        <a href="tel:+628123456789" style="color: var(--primary); text-decoration: none;">+62 812-3456-789</a>
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✉️</div>
+                    <h3 class="feature-title">Email</h3>
+                    <p class="feature-description">
+                        <a href="mailto:info@lupycanteen.com" style="color: var(--primary); text-decoration: none;">info@lupycanteen.com</a><br>
+                        <a href="mailto:order@lupycanteen.com" style="color: var(--primary); text-decoration: none;">order@lupycanteen.com</a>
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🕒</div>
+                    <h3 class="feature-title">Jam Operasional</h3>
+                    <p class="feature-description">
+                        Senin - Jumat: 07:00 - 15:00<br>
+                        Sabtu: 07:00 - 12:00<br>
+                        Minggu: Tutup
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="contact-form-section">
+        <div class="container">
+            <div class="form-content">
+                <div class="form-text">
+                    <span class="section-badge">Kirim Pesan</span>
+                    <h2 class="section-title">Ada yang Ingin <span class="gradient-text">Ditanyakan?</span></h2>
+                    <p class="form-description">
+                        Kami senang mendengar dari Anda! Kirimkan pesan, saran, atau kritik untuk membantu kami memberikan pelayanan yang lebih baik.
+                    </p>
+                    <div class="form-features">
+                        <div class="feature-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" fill="#4ade80" opacity="0.2"/>
+                                <path d="M9 12L11 14L15 10" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Respon cepat dalam 24 jam</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" fill="#4ade80" opacity="0.2"/>
+                                <path d="M9 12L11 14L15 10" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Tim customer service yang ramah</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" fill="#4ade80" opacity="0.2"/>
+                                <path d="M9 12L11 14L15 10" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Solusi terbaik untuk setiap masalah</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm" onsubmit="submitForm(event)">
+                        <div class="form-group">
+                            <label for="name">Nama Lengkap</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Nomor Telepon</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subjek</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Pilih subjek</option>
+                                <option value="order">Pemesanan</option>
+                                <option value="complaint">Keluhan</option>
+                                <option value="suggestion">Saran</option>
+                                <option value="other">Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Pesan</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <span>Kirim Pesan</span>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Lokasi Kami</span>
+                <h2 class="section-title">Temukan <span class="gradient-text">LupyCanteen</span></h2>
+                <p class="section-description">Kunjungi langsung kantin kami di lokasi yang mudah dijangkau</p>
+            </div>
+            <div class="map-container">
+                <div class="real-map">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.746!2d107.301!3d-6.123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6981234567890a%3A0x1234567890abcdef!2sJl.%20Raya%20Margamulya%2C%20Telukjambe%20Barat%2C%20Karawang%2C%20Jawa%20Barat!5e0!3m2!1sid!2sid!4v1234567890123!5m2!1sid!2sid"
+                        width="100%" 
+                        height="400" 
+                        style="border:0; border-radius: 15px;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                    <div class="map-overlay">
+                        <div class="location-info">
+                            <div class="location-icon">📍</div>
+                            <div class="location-details">
+                                <h3>LupyCanteen</h3>
+                                <p>Jl. Raya Margamulya, Telukjambe Barat</p>
+                                <p>Karawang, Jawa Barat</p>
+                            </div>
+                        </div>
+                        <button class="btn-directions" onclick="openDirections()">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 2L3 7V18L10 13L17 18V7L10 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Petunjuk Arah
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <span class="logo-icon">🍱</span>
+                    <span class="logo-text">LupyCanteen</span>
+                </div>
+                <p class="footer-description">
+                    Kantin sekolah terbaik dengan menu lezat dan bergizi untuk mendukung aktivitas belajarmu.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-title">Menu</h4>
+                <ul class="footer-links">
+                    <li><a href="menu-rapi.html">Makanan</a></li>
+                    <li><a href="menu-rapi.html">Minuman</a></li>
+                    <li><a href="menu-rapi.html">Snack</a></li>
+                    <li><a href="special.html">Menu Spesial</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-title">Informasi</h4>
+                <ul class="footer-links">
+                    <li><a href="about.html">Tentang Kami</a></li>
+                    <li><a href="contact.html">Kontak</a></li>
+                    <li><a href="#">Jam Operasional</a></li>
+                    <li><a href="#">Kebijakan</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-title">Jam Buka</h4>
+                <p class="footer-hours">Senin - Jumat: 07:00 - 15:00</p>
+                <p class="footer-hours">Sabtu: 07:00 - 12:00</p>
+                <p class="footer-hours">Minggu: Tutup</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LupyCanteen. Dibuat dengan ❤️ untuk siswa-siswi tercinta.</p>
+        </div>
+    </footer>
+
+    <script>
+        function submitForm(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            
+            // Show success message
+            alert(`Terima kasih ${data.name}! Pesan Anda telah terkirim. Kami akan merespon dalam 24 jam.`);
+            
+            // Reset form
+            event.target.reset();
+        }
+        
+        function openMaps() {
+            window.open('https://maps.app.goo.gl/iunCKcGm4hp3h88h6', '_blank');
+        }
+        
+        function openDirections() {
+            window.open('https://maps.app.goo.gl/iunCKcGm4hp3h88h6', '_blank');
+        }
+    </script>
+    <!-- Logout functionality -->
+    <script>
+        // Logout function - RENAMED TO AVOID CONFLICT WITH SCRIPT.JS
+        function logoutUser() {
+            console.log('🚪 LogoutUser function called from Contact page');
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                console.log('✅ User confirmed logout');
+                localStorage.removeItem('lupycanteen_user');
+                sessionStorage.removeItem('lupycanteen_user');
+                console.log('🗑️ User data cleared from storage');
+                alert('Logout berhasil!');
+                setTimeout(() => {
+                    console.log('🔄 Redirecting to login page...');
+                    window.location.href = 'index.html';
+                }, 1000);
+            } else {
+                console.log('❌ User cancelled logout');
+            }
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 Contact page loaded');
+        });
+    </script>
+</body>
+</html>

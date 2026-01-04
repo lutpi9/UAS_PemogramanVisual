@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - LupyCanteen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🍱</span>
+                <span class="logo-text">LupyCanteen</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="menu.html" class="nav-link active">Menu</a></li>
+                <li><a href="index.html#special" class="nav-link">Special</a></li>
+                <li><a href="about.html" class="nav-link">Tentang</a></li>
+                <li><a href="contact.html" class="nav-link">Kontak</a></li>
+                <li><a href="#" class="nav-link admin-link" onclick="toggleAdminMenu()" id="adminNavLink" style="display: none;">Admin</a></li>
+            </ul>
+            <div class="nav-cta">
+                <button class="cart-btn" onclick="toggleCart()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V17C17 18.1 16.1 19 15 19H9C7.9 19 7 18.1 7 17V13M9 22C9.6 22 10 21.6 10 21S9.6 20 9 20 8 20.4 8 21 8.4 22 9 22ZM20 22C20.6 22 21 21.6 21 21S20.6 20 20 20 19 20.4 19 21 19.4 22 20 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="cart-count">0</span>
+                </button>
+                <button class="btn-order" onclick="scrollToSection('makanan')">Pesan Sekarang</button>
+                <button class="btn-admin" onclick="showAdminLogin()" id="adminLoginBtn">Admin</button>
+                <div class="admin-user-info" id="adminUserInfo" style="display: none;">
+                    <span class="admin-name" id="adminUserName">Admin</span>
+                    <button class="btn-logout" onclick="adminLogout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Menu Hero -->
+    <section class="menu-hero">
+        <div class="hero-background"></div>
+        <div class="menu-hero-content">
+            <div class="container">
+                <span class="hero-badge">🍽️ Menu Lengkap</span>
+                <h1 class="hero-title">
+                    Menu
+                    <span class="gradient-text">LupyCanteen</span>
+                </h1>
+                <p class="hero-description">
+                    Pilihan menu lengkap dengan cita rasa terbaik untuk menemani aktivitas belajarmu setiap hari.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Navigation -->
+    <section class="menu-navigation">
+        <div class="container">
+            <div class="menu-nav-buttons">
+                <button class="menu-nav-btn active" onclick="scrollToSection('makanan')">
+                    <span class="nav-icon">🍛</span>
+                    <span>Makanan</span>
+                </button>
+                <button class="menu-nav-btn" onclick="scrollToSection('minuman')">
+                    <span class="nav-icon">🥤</span>
+                    <span>Minuman</span>
+                </button>
+                <button class="menu-nav-btn" onclick="scrollToSection('snack')">
+                    <span class="nav-icon">🍪</span>
+                    <span>Snack</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAKANAN SECTION -->
+    <section id="makanan" class="menu-category-section">
+        <div class="container">
+            <div class="category-header">
+                <div class="category-icon">🍛</div>
+                <h2 class="category-title">Makanan</h2>
+                <p class="category-description">Menu makanan utama yang mengenyangkan dan bergizi</p>
+            </div>
+            
+            <div class="menu-grid">
+                <div class="menu-card" data-name="Nasi Goreng Spesial" data-price="12000" data-category="makanan">
+                    <div class="menu-image">
+                        <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=300&fit=crop" alt="Nasi Goreng" onerror="this.style.background='linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%)'">
+                        <div class="menu-badge best-seller">Best Seller</div>
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Nasi Goreng Spesial</h3>
+                        <p class="menu-description">Nasi goreng dengan telur, ayam, dan sayuran segar</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 12.000</span>
+                            <div class="menu-actions">
+                                <button class="btn-add" onclick="addToCart('Nasi Goreng Spesial', 12000)">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </button>
+                                <button class="btn-edit" onclick="editStaticMenu('Nasi Goreng Spesial', 'Nasi goreng dengan telur, ayam, dan sayuran segar', 12000, 'makanan', 'best-seller')" title="Edit Menu">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M12.146 0.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708L9.207 10.5H6v-3.207l6.646-6.647zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zM10 3.293L4 9.293V12h2.707l6-6L10 3.293z" fill="currentColor"/>
+                                        <path d="M2.5 13.5A.5.5 0 0 1 3 13h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" fill="currentColor"/>
+                                    </svg>
+                                </button>
+                                <button class="btn-delete" onclick="deleteStaticMenu('Nasi Goreng Spesial')" title="Hapus Menu">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" fill="currentColor"/>
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" fill="currentColor"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Mie Goreng Jawa" data-price="10000" data-category="makanan">
+                    <div class="menu-image">
+                        <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&h=300&fit=crop" alt="Mie Goreng" onerror="this.style.background='linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'">
+                        <div class="menu-badge trending">Trending</div>
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Mie Goreng Jawa</h3>
+                        <p class="menu-description">Mie goreng khas dengan bumbu rempah pilihan</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 10.000</span>
+                            <div class="menu-actions">
+                                <button class="btn-add" onclick="addToCart('Mie Goreng Jawa', 10000)">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </button>
+                                <button class="btn-edit" onclick="editStaticMenu('Mie Goreng Jawa', 'Mie goreng khas dengan bumbu rempah pilihan', 10000, 'makanan', 'trending')" title="Edit Menu">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M12.146 0.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708L9.207 10.5H6v-3.207l6.646-6.647zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zM10 3.293L4 9.293V12h2.707l6-6L10 3.293z" fill="currentColor"/>
+                                        <path d="M2.5 13.5A.5.5 0 0 1 3 13h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" fill="currentColor"/>
+                                    </svg>
+                                </button>
+                                <button class="btn-delete" onclick="deleteStaticMenu('Mie Goreng Jawa')" title="Hapus Menu">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" fill="currentColor"/>
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" fill="currentColor"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Ayam Katsu Crispy" data-price="15000" data-category="makanan">
+                    <div class="menu-image">
+                        <img src="https://www.frisianflag.com/storage/app/media/uploaded-files/ayam-katsu-sederhana.jpg" alt="Ayam Katsu" onerror="this.style.background='linear-gradient(135deg, #ffa751 0%, #ffe259 100%)'">
+                        <div class="menu-badge new">New</div>
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Ayam Katsu Crispy</h3>
+                        <p class="menu-description">Ayam crispy dengan saus katsu spesial</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 15.000</span>
+                            <button class="btn-add" onclick="addToCart('Ayam Katsu Crispy', 15000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Soto Ayam" data-price="13000" data-category="makanan">
+                    <div class="menu-image">
+                        <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=300&fit=crop" alt="Soto Ayam" onerror="this.style.background='linear-gradient(135deg, #FFB3D9 0%, #FFC0E5 100%)'">
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Soto Ayam</h3>
+                        <p class="menu-description">Soto ayam kuah bening dengan rempah tradisional</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 13.000</span>
+                            <button class="btn-add" onclick="addToCart('Soto Ayam', 13000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Gado-Gado" data-price="11000" data-category="makanan">
+                    <div class="menu-image">
+                        <img src="https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/74/2025/01/27/Gado-Gado-2337756915.jpg" alt="Gado-Gado" onerror="this.style.background='linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%)'">
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Gado-Gado</h3>
+                        <p class="menu-description">Sayuran segar dengan bumbu kacang khas Indonesia</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 11.000</span>
+                            <button class="btn-add" onclick="addToCart('Gado-Gado', 11000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Bakso Malang" data-price="14000" data-category="makanan">
+                    <div class="menu-image">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Baso_Malang_Karapitan.JPG" alt="Bakso" onerror="this.style.background='linear-gradient(135deg, #667eea 0%, #764ba2 100%)'">
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Bakso Malang</h3>
+                        <p class="menu-description">Bakso daging sapi dengan kuah kaldu segar</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 14.000</span>
+                            <button class="btn-add" onclick="addToCart('Bakso Malang', 14000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Nasi Uduk" data-price="9000" data-category="makanan">
+                    <div class="menu-image">
+                        <img src="https://cdn.yummy.co.id/content-images/images/20200611/J1acgi7BV9YusddDwNjwvRvRvqgw7m2x-31353931383733303935d41d8cd98f00b204e9800998ecf8427e.jpg?x-oss-process=image/resize,w_388,h_388,m_fixed,x-oss-process=image/format,webp" alt="Nasi Uduk" onerror="this.style.background='linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'">
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Nasi Uduk</h3>
+                        <p class="menu-description">Nasi uduk dengan lauk pauk lengkap</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 9.000</span>
+                            <button class="btn-add" onclick="addToCart('Nasi Uduk', 9000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Rendang Daging" data-price="18000" data-category="makanan">
+                    <div class="menu-image">
+                        <img src="https://cdn.yummy.co.id/content-images/images/20230329/9IZ0mYzMAQi1EgVsb6cEbqyDCPzvNiyQ-31363830303534363638d41d8cd98f00b204e9800998ecf8427e.jpg?x-oss-process=image/resize,w_388,h_388,m_fixed,x-oss-process=image/format,webp" alt="Rendang" onerror="this.style.background='linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)'">
+                        <div class="menu-badge premium">Premium</div>
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Rendang Daging</h3>
+                        <p class="menu-description">Rendang daging sapi dengan bumbu rempah Padang</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 18.000</span>
+                            <button class="btn-add" onclick="addToCart('Rendang Daging', 18000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Ayam Geprek Keju" data-price="16000" data-category="makanan">
+                    <div class="menu-image">
+                        <img src="https://www.dapurkobe.co.id/wp-content/uploads/ayam-geprek-keju.jpg" alt="Ayam Geprek Keju" onerror="this.style.background='linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%)'">
+                        <div class="menu-badge special">Special</div>
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Ayam Geprek Keju</h3>
+                        <p class="menu-description">Ayam crispy geprek dengan keju mozzarella dan sambal level</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 16.000</span>
+                            <div class="menu-actions">
+                                <button class="btn-add" onclick="addToCart('Ayam Geprek Keju', 16000)">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </button>
+                                <button class="btn-edit" onclick="editStaticMenu('Ayam Geprek Keju', 'Ayam crispy geprek dengan keju mozzarella dan sambal level', 16000, 'makanan', 'special')" title="Edit Menu">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M12.146 0.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708L9.207 10.5H6v-3.207l6.646-6.647zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zM10 3.293L4 9.293V12h2.707l6-6L10 3.293z" fill="currentColor"/>
+                                        <path d="M2.5 13.5A.5.5 0 0 1 3 13h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" fill="currentColor"/>
+                                    </svg>
+                                </button>
+                                <button class="btn-delete" onclick="deleteStaticMenu('Ayam Geprek Keju')" title="Hapus Menu">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" fill="currentColor"/>
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" fill="currentColor"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Container untuk menu dari API -->
+                <div id="makananItems" class="api-menu-items">
+                    <!-- Menu makanan dari API akan ditambahkan di sini -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MINUMAN SECTION -->
+    <section id="minuman" class="menu-category-section">
+        <div class="container">
+            <div class="category-header">
+                <div class="category-icon">🥤</div>
+                <h2 class="category-title">Minuman</h2>
+                <p class="category-description">Minuman segar untuk menemani aktivitasmu</p>
+            </div>
+            
+            <div class="menu-grid">
+                <div class="menu-card" data-name="Jus Buah Segar" data-price="8000" data-category="minuman">
+                    <div class="menu-image">
+                        <img src="https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=400&h=300&fit=crop" alt="Jus Buah" onerror="this.style.background='linear-gradient(135deg, #fa709a 0%, #fee140 100%)'">
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Jus Buah Segar</h3>
+                        <p class="menu-description">Jus buah segar tanpa pengawet</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 8.000</span>
+                            <button class="btn-add" onclick="addToCart('Jus Buah Segar', 8000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Es Teh Manis" data-price="5000" data-category="minuman">
+                    <div class="menu-image">
+                        <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=300&fit=crop" alt="Es Teh" onerror="this.style.background='linear-gradient(135deg, #A8D8EA 0%, #9FD3E5 100%)'">
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Es Teh Manis</h3>
+                        <p class="menu-description">Es teh manis segar untuk menemani makan</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 5.000</span>
+                            <button class="btn-add" onclick="addToCart('Es Teh Manis', 5000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Es Jeruk" data-price="6000" data-category="minuman">
+                    <div class="menu-image">
+                        <img src="https://cdn.yummy.co.id/content-images/images/20201013/WqfCTib25afAXzGCyok7dmAmTKGeGpkM-31363032353730383236d41d8cd98f00b204e9800998ecf8427e.jpg?x-oss-process=image/resize,w_388,h_388,m_fixed,x-oss-process=image/format,webp" alt="Es Jeruk" onerror="this.style.background='linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'">
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Es Jeruk</h3>
+                        <p class="menu-description">Es jeruk segar dengan potongan jeruk asli</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 6.000</span>
+                            <button class="btn-add" onclick="addToCart('Es Jeruk', 6000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Kopi Susu" data-price="7000" data-category="minuman">
+                    <div class="menu-image">
+                        <img src="https://cdn.yummy.co.id/content-images/images/20230119/rAvgrbBssoG6rNVTeqyzirA1WhQE7Nkl-31363734313235353439d41d8cd98f00b204e9800998ecf8427e.jpg?x-oss-process=image/resize,w_388,h_388,m_fixed,x-oss-process=image/format,webp" alt="Kopi Susu" onerror="this.style.background='linear-gradient(135deg, #d299c2 0%, #fef9d7 100%)'">
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Kopi Susu</h3>
+                        <p class="menu-description">Kopi susu hangat dengan rasa yang pas</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 7.000</span>
+                            <button class="btn-add" onclick="addToCart('Kopi Susu', 7000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Milkshake Coklat" data-price="12000" data-category="minuman">
+                    <div class="menu-image">
+                        <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&h=300&fit=crop" alt="Milkshake" onerror="this.style.background='linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)'">
+                        <div class="menu-badge trending">Trending</div>
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Milkshake Coklat</h3>
+                        <p class="menu-description">Milkshake coklat creamy dengan topping</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 12.000</span>
+                            <button class="btn-add" onclick="addToCart('Milkshake Coklat', 12000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Air Mineral" data-price="3000" data-category="minuman">
+                    <div class="menu-image">
+                        <img src="https://bosara.sultraprov.go.id/asset/foto_produk/product-tumaka-20230921082444695.jpg" alt="Air Mineral" onerror="this.style.background='linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'">
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Air Mineral</h3>
+                        <p class="menu-description">Air mineral kemasan 600ml</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 3.000</span>
+                            <button class="btn-add" onclick="addToCart('Air Mineral', 3000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Container untuk menu dari API -->
+                <div id="minumanItems" class="api-menu-items">
+                    <!-- Menu minuman dari API akan ditambahkan di sini -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SNACK SECTION -->
+    <section id="snack" class="menu-category-section">
+        <div class="container">
+            <div class="category-header">
+                <div class="category-icon">🍪</div>
+                <h2 class="category-title">Snack</h2>
+                <p class="category-description">Camilan lezat untuk teman santai</p>
+            </div>
+            
+            <div class="menu-grid">
+                <div class="menu-card" data-name="Pisang Goreng" data-price="4000" data-category="snack">
+                    <div class="menu-image">
+                        <img src="https://cdn.grid.id/crop/0x0:0x0/700x465/smart/filters:format(webp):quality(100)/photo/2025/12/05/pisang-goreng-tandukjpg-20251205043631.jpg" alt="Pisang Goreng" onerror="this.style.background='linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%)'">
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Pisang Goreng</h3>
+                        <p class="menu-description">Pisang goreng crispy dengan tepung renyah</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 4.000</span>
+                            <button class="btn-add" onclick="addToCart('Pisang Goreng', 4000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Keripik Singkong" data-price="5000" data-category="snack">
+                    <div class="menu-image">
+                        <img src="https://filebroker-cdn.lazada.co.id/kf/Sec3e758b09e246d080879f6b2b919d8bP.jpg" alt="Keripik" onerror="this.style.background='linear-gradient(135deg, #fdcb6e 0%, #e17055 100%)'">
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Keripik Singkong</h3>
+                        <p class="menu-description">Keripik singkong renyah dengan berbagai rasa</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 5.000</span>
+                            <button class="btn-add" onclick="addToCart('Keripik Singkong', 5000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Roti Bakar" data-price="8000" data-category="snack">
+                    <div class="menu-image">
+                        <img src="https://djavatoday.com/wp-content/uploads/2024/09/IMG-20240920-WA0052.jpg" alt="Roti Bakar" onerror="this.style.background='linear-gradient(135deg, #ff7675 0%, #fd79a8 100%)'">
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Roti Bakar</h3>
+                        <p class="menu-description">Roti bakar dengan selai coklat dan keju</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 8.000</span>
+                            <button class="btn-add" onclick="addToCart('Roti Bakar', 8000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Donat Mini" data-price="6000" data-category="snack">
+                    <div class="menu-image">
+                        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop" alt="Donat" onerror="this.style.background='linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%)'">
+                        <div class="menu-badge new">New</div>
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Donat Mini</h3>
+                        <p class="menu-description">Donat mini dengan berbagai topping manis</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 6.000</span>
+                            <button class="btn-add" onclick="addToCart('Donat Mini', 6000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Martabak Mini" data-price="7000" data-category="snack">
+                    <div class="menu-image">
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop" alt="Martabak" onerror="this.style.background='linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'">
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Martabak Mini</h3>
+                        <p class="menu-description">Martabak mini manis dengan coklat keju</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 7.000</span>
+                            <button class="btn-add" onclick="addToCart('Martabak Mini', 7000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-name="Es Krim Cup" data-price="5000" data-category="snack">
+                    <div class="menu-image">
+                        <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=300&fit=crop" alt="Es Krim" onerror="this.style.background='linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)'">
+                    </div>
+                    <div class="menu-content">
+                        <h3 class="menu-title">Es Krim Cup</h3>
+                        <p class="menu-description">Es krim cup dengan berbagai rasa</p>
+                        <div class="menu-footer">
+                            <span class="menu-price">Rp 5.000</span>
+                            <button class="btn-add" onclick="addToCart('Es Krim Cup', 5000)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Container untuk menu dari API -->
+                <div id="snackItems" class="api-menu-items">
+                    <!-- Menu snack dari API akan ditambahkan di sini -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Small Add Menu Button in Corner -->
+    <button class="add-menu-btn-small" onclick="showAddMenuModal()" title="Tambah Menu Baru">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+    </button>
+
+    <!-- Shopping Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Keranjang Belanja</h2>
+                <span class="close" onclick="toggleCart()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="cartItems"></div>
+                <div class="cart-total">
+                    <div class="total-row">
+                        <span>Total:</span>
+                        <span id="cartTotal">Rp 0</span>
+                    </div>
+                </div>
+                <div class="cart-actions">
+                    <button class="btn-secondary" onclick="clearCart()">Kosongkan</button>
+                    <button class="btn-primary" onclick="checkout()">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Modal -->
+    <div id="receiptModal" class="modal">
+        <div class="modal-content receipt-modal">
+            <div class="modal-header">
+                <h2>Struk Pembelian</h2>
+                <span class="close" onclick="closeReceipt()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="receiptContent" class="receipt">
+                    <div class="receipt-header">
+                        <div class="receipt-logo">
+                            <span class="logo-icon">🍱</span>
+                            <span class="logo-text">LupyCanteen</span>
+                        </div>
+                        <div class="receipt-info">
+                            <p>Kantin Sekolah Modern</p>
+                            <p>Jl. Raya Margamulya</p>
+                            <p>Telukjambe Barat</p>
+                            <p>Telp: (021) 123-4567</p>
+                        </div>
+                        <div class="receipt-divider"></div>
+                    </div>
+                    <div class="receipt-body">
+                        <div class="receipt-date">
+                            <p>Tanggal: <span id="receiptDate"></span></p>
+                            <p>No. Transaksi: <span id="receiptNumber"></span></p>
+                        </div>
+                        <div class="receipt-divider"></div>
+                        <div id="receiptItems"></div>
+                        <div class="receipt-divider"></div>
+                        <div class="receipt-total">
+                            <div class="total-row">
+                                <span>TOTAL:</span>
+                                <span id="receiptTotal"></span>
+                            </div>
+                        </div>
+                        <div class="receipt-footer">
+                            <p>Terima kasih atas kunjungan Anda!</p>
+                            <p>Selamat menikmati makanan 😊</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="receipt-actions">
+                    <button class="btn-secondary" onclick="printReceipt()">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M5 7V3C5 2.4 5.4 2 6 2H14C14.6 2 15 2.4 15 3V7M5 7H3C2.4 7 2 7.4 2 8V14C2 14.6 2.4 15 3 15H5M5 7H15M15 7H17C17.6 7 18 7.4 18 8V14C18 14.6 17.6 15 17 15H15M5 15V17C5 17.6 5.4 18 6 18H14C14.6 18 15 17.6 15 17V15M5 15H15" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        Print Struk
+                    </button>
+                    <button class="btn-primary" onclick="downloadPDF()">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 12L6 8H8V3H12V8H14L10 12ZM3 15V17H17V15H3Z" fill="currentColor"/>
+                        </svg>
+                        Download PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Menu Modal -->
+    <div id="editMenuModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Menu</h2>
+                <span class="close" onclick="hideEditMenuModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="editMenuForm" onsubmit="submitEditMenuForm(event)" enctype="multipart/form-data">
+                    <input type="hidden" id="editMenuId" name="menuId">
+                    <input type="hidden" id="editMenuType" name="menuType"> <!-- static or api -->
+                    
+                    <div class="form-group">
+                        <label for="editName">Nama Menu</label>
+                        <input type="text" id="editName" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editPrice">Harga (Rp)</label>
+                        <input type="number" id="editPrice" name="price" min="1000" step="500" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editCategory">Kategori</label>
+                        <select id="editCategory" name="category" required>
+                            <option value="">Pilih kategori</option>
+                            <option value="makanan">Makanan</option>
+                            <option value="minuman">Minuman</option>
+                            <option value="snack">Snack</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editDescription">Deskripsi</label>
+                        <textarea id="editDescription" name="description" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editBadge">Badge (Opsional)</label>
+                        <select id="editBadge" name="badge">
+                            <option value="">Tanpa badge</option>
+                            <option value="new">New</option>
+                            <option value="trending">Trending</option>
+                            <option value="best-seller">Best Seller</option>
+                            <option value="premium">Premium</option>
+                            <option value="populer">Populer</option>
+                            <option value="pedas">Pedas</option>
+                            <option value="sehat">Sehat</option>
+                            <option value="segar">Segar</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editImage">Gambar Menu (Opsional)</label>
+                        <input type="file" id="editImage" name="image" accept="image/*" onchange="handleEditImageUpload(event)">
+                        <small class="form-help">Format: JPG, PNG, GIF, WebP. Maksimal 5MB. Kosongkan jika tidak ingin mengubah gambar.</small>
+                    </div>
+                    
+                    <div id="editImagePreview" class="image-preview" style="display: none;">
+                        <img id="editPreviewImg" src="" alt="Preview">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="hideEditMenuModal()">Batal</button>
+                        <button type="submit" class="btn-primary">Update Menu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Menu Modal -->
+    <div id="addMenuModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Tambah Menu Baru</h2>
+                <span class="close" onclick="closeAddMenuModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="addMenuForm" onsubmit="submitMenuForm(event)" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="name">Nama Menu</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="price">Harga (Rp)</label>
+                        <input type="number" id="price" name="price" min="1000" step="500" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category">Kategori</label>
+                        <select id="category" name="category" required>
+                            <option value="">Pilih kategori</option>
+                            <option value="makanan">Makanan</option>
+                            <option value="minuman">Minuman</option>
+                            <option value="snack">Snack</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Deskripsi</label>
+                        <textarea id="description" name="description" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="badge">Badge (Opsional)</label>
+                        <select id="badge" name="badge">
+                            <option value="">Tanpa badge</option>
+                            <option value="new">New</option>
+                            <option value="trending">Trending</option>
+                            <option value="populer">Populer</option>
+                            <option value="pedas">Pedas</option>
+                            <option value="sehat">Sehat</option>
+                            <option value="segar">Segar</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="image">Gambar Menu</label>
+                        <input type="file" id="image" name="image" accept="image/*" onchange="handleImageUpload(event)">
+                        <small class="form-help">Format: JPG, PNG, GIF, WebP. Maksimal 5MB.</small>
+                    </div>
+                    
+                    <div id="imagePreview" class="image-preview" style="display: none;">
+                        <img id="previewImg" src="" alt="Preview">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeAddMenuModal()">Batal</button>
+                        <button type="submit" class="btn-primary">Tambah Menu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <span class="logo-icon">🍱</span>
+                    <span class="logo-text">LupyCanteen</span>
+                </div>
+                <p class="footer-description">
+                    Kantin sekolah terbaik dengan menu lezat dan bergizi untuk mendukung aktivitas belajarmu.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-title">Menu</h4>
+                <ul class="footer-links">
+                    <li><a href="#makanan">Makanan</a></li>
+                    <li><a href="#minuman">Minuman</a></li>
+                    <li><a href="#snack">Snack</a></li>
+                    <li><a href="index.html#special">Menu Spesial</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-title">Informasi</h4>
+                <ul class="footer-links">
+                    <li><a href="about.html">Tentang Kami</a></li>
+                    <li><a href="contact.html">Kontak</a></li>
+                    <li><a href="#">Jam Operasional</a></li>
+                    <li><a href="#">Kebijakan</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-title">Jam Buka</h4>
+                <p class="footer-hours">Senin - Jumat: 07:00 - 15:00</p>
+                <p class="footer-hours">Sabtu: 07:00 - 12:00</p>
+                <p class="footer-hours">Minggu: Tutup</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LupyCanteen. Dibuat dengan ❤️ untuk siswa-siswi tercinta.</p>
+        </div>
+    </footer>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔐 Admin Login</h2>
+                <span class="close" onclick="hideAdminLogin()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="adminLoginForm" onsubmit="adminLogin(event)">
+                    <div class="form-group">
+                        <label>Username:</label>
+                        <input type="text" id="adminUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password:</label>
+                        <input type="password" id="adminPassword" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="hideAdminLogin()">Batal</button>
+                        <button type="submit" class="btn-primary">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Modal -->
+    <div id="adminDashboardModal" class="modal admin-modal">
+        <div class="modal-content admin-dashboard">
+            <div class="modal-header">
+                <h2>📊 Admin Dashboard</h2>
+                <span class="close" onclick="hideAdminDashboard()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="admin-tabs">
+                    <button class="tab-btn active" onclick="showAdminTab('dashboard')">Dashboard</button>
+                    <button class="tab-btn" onclick="showAdminTab('menu')">Menu</button>
+                    <button class="tab-btn" onclick="showAdminTab('orders')">Pesanan</button>
+                    <button class="tab-btn" onclick="showAdminTab('users')">Users</button>
+                </div>
+                
+                <!-- Dashboard Tab -->
+                <div id="adminTabDashboard" class="admin-tab-content active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🍽️</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="dashTotalMenus">-</div>
+                                <div class="stat-label">Total Menu</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📋</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="dashTotalOrders">-</div>
+                                <div class="stat-label">Total Pesanan</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="dashTotalUsers">-</div>
+                                <div class="stat-label">Total Users</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="dashTotalRevenue">-</div>
+                                <div class="stat-label">Pendapatan</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Menu Management Tab -->
+                <div id="adminTabMenu" class="admin-tab-content">
+                    <div class="admin-actions">
+                        <button class="btn-primary" onclick="showAddMenuForm()">+ Tambah Menu</button>
+                    </div>
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Gambar</th>
+                                    <th>Nama</th>
+                                    <th>Kategori</th>
+                                    <th>Harga</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminMenuTable">
+                                <tr><td colspan="6">Memuat data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Orders Tab -->
+                <div id="adminTabOrders" class="admin-tab-content">
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Pelanggan</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Tanggal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminOrdersTable">
+                                <tr><td colspan="6">Memuat data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Users Tab -->
+                <div id="adminTabUsers" class="admin-tab-content">
+                    <div class="admin-actions">
+                        <button class="btn-primary" onclick="showAddUserForm()">+ Tambah User</button>
+                    </div>
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminUsersTable">
+                                <tr><td colspan="6">Memuat data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

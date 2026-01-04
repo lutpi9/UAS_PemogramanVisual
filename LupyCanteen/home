@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Main App - LupyCanteen</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .debug-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .debug-section h3 { margin-top: 0; color: #333; }
+        .debug-info { background: #f5f5f5; padding: 10px; border-radius: 3px; font-family: monospace; white-space: pre-wrap; }
+        button { padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>LupyCanteen Main App Debug</h1>
+    <p>This page helps debug the homepage menu loading issue.</p>
+    
+    <div class="debug-section">
+        <h3>Quick Actions</h3>
+        <button onclick="checkDOMElements()">Check DOM Elements</button>
+        <button onclick="testMenuLoad()">Test Menu Load</button>
+        <button onclick="simulateLogin()">Simulate Login</button>
+        <button onclick="openMainApp()">Open Main App</button>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+    
+    <div class="debug-section">
+        <h3>Debug Log</h3>
+        <div id="debugLog" class="debug-info">Ready for debugging...\n</div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>DOM State</h3>
+        <div id="domState" class="debug-info">Not checked yet</div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>Local Storage</h3>
+        <div id="storageState" class="debug-info">Not checked yet</div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('debugLog');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : '';
+            logDiv.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(`[${timestamp}] ${message}`);
+        }
+        
+        function clearLog() {
+            document.getElementById('debugLog').innerHTML = 'Log cleared...\n';
+        }
+        
+        function checkDOMElements() {
+            log('Checking DOM elements...');
+            
+            // Check if main app elements exist
+            const elements = [
+                'homepageMenuContainer',
+                'menu-container (class)',
+                'nav-menu',
+                'hero',
+                'menu'
+            ];
+            
+            let domInfo = 'DOM Elements Check:\n';
+            
+            elements.forEach(elementId => {
+                let element;
+                if (elementId.includes('class')) {
+                    element = document.querySelector('.menu-container');
+                    domInfo += `${elementId}: ${element ? 'FOUND' : 'NOT FOUND'}\n`;
+                } else {
+                    element = document.getElementById(elementId);
+                    domInfo += `${elementId}: ${element ? 'FOUND' : 'NOT FOUND'}\n`;
+                }
+                
+                if (element) {
+                    domInfo += `  - Tag: ${element.tagName}\n`;
+                    domInfo += `  - Classes: ${element.className}\n`;
+                    domInfo += `  - Content length: ${element.innerHTML.length}\n`;
+                }
+            });
+            
+            document.getElementById('domState').textContent = domInfo;
+            log('DOM check completed', 'success');
+        }
+        
+        function testMenuLoad() {
+            log('Testing menu load function...');
+            
+            // Check if we're on the main app page
+            if (window.location.pathname.includes('main-app.html')) {
+                if (typeof window.debugLoadHomepageMenu === 'function') {
+                    log('Calling debugLoadHomepageMenu function...');
+                    window.debugLoadHomepageMenu();
+                } else {
+                    log('debugLoadHomepageMenu function not found', 'error');
+                }
+            } else {
+                log('Not on main app page, redirecting...', 'error');
+                openMainApp();
+            }
+        }
+        
+        function simulateLogin() {
+            log('Simulating login...');
+            
+            const userData = {
+                id: 'test-user-id',
+                username: 'testuser',
+                fullName: 'Test User',
+                email: 'test@lupycanteen.com',
+                role: 'Customer'
+            };
+            
+            localStorage.setItem('lupycanteen_user', JSON.stringify(userData));
+            log('User data stored in localStorage', 'success');
+            
+            checkStorageState();
+        }
+        
+        function checkStorageState() {
+            const userData = localStorage.getItem('lupycanteen_user');
+            let storageInfo = 'Local Storage State:\n';
+            
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    storageInfo += `User logged in: ${user.fullName} (${user.role})\n`;
+                    storageInfo += `Username: ${user.username}\n`;
+                    storageInfo += `Email: ${user.email}\n`;
+                } catch (e) {
+                    storageInfo += `Invalid user data: ${e.message}\n`;
+                }
+            } else {
+                storageInfo += 'No user data found\n';
+            }
+            
+            document.getElementById('storageState').textContent = storageInfo;
+        }
+        
+        function openMainApp() {
+            log('Opening main app...');
+            window.open('/home/main-app.html', '_blank');
+        }
+        
+        // Auto-check on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Debug page loaded');
+            checkDOMElements();
+            checkStorageState();
+        });
+    </script>
+</body>
+</html>

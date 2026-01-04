@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Menu - LupyCanteen Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">🍱</span>
+                    <span class="logo-text">LupyCanteen</span>
+                </div>
+                <div class="admin-info">
+                    <div class="admin-avatar">👤</div>
+                    <div class="admin-details">
+                        <div class="admin-name" id="adminName">Admin</div>
+                        <div class="admin-role" id="adminRole">Administrator</div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <span class="nav-icon">📊</span>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="menu-management.html" class="nav-link active">
+                            <span class="nav-icon">🍽️</span>
+                            <span class="nav-text">Manajemen Menu</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="user-management.html" class="nav-link">
+                            <span class="nav-icon">👥</span>
+                            <span class="nav-text">Manajemen Karyawan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="order-management.html" class="nav-link">
+                            <span class="nav-icon">📋</span>
+                            <span class="nav-text">Manajemen Pesanan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="reports.html" class="nav-link">
+                            <span class="nav-icon">📈</span>
+                            <span class="nav-text">Laporan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="settings.html" class="nav-link">
+                            <span class="nav-icon">⚙️</span>
+                            <span class="nav-text">Pengaturan</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Manajemen Menu</h1>
+                    <p class="page-subtitle">Kelola menu makanan, minuman, dan snack</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-primary" onclick="openAddMenuModal()">
+                        <span>➕</span>
+                        Tambah Menu
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- Alert Container -->
+                <div id="alertContainer"></div>
+
+                <!-- Search and Filter -->
+                <div class="form-container">
+                    <div class="search-filter-bar">
+                        <input type="text" id="searchInput" class="form-input search-input" placeholder="Cari menu...">
+                        <select id="categoryFilter" class="form-select filter-select">
+                            <option value="">Semua Kategori</option>
+                            <option value="makanan">Makanan</option>
+                            <option value="minuman">Minuman</option>
+                            <option value="snack">Snack</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="exportMenuData()">
+                            <span>📊</span>
+                            Export CSV
+                        </button>
+                        <button class="btn btn-secondary" onclick="printMenuData()">
+                            <span>🖨️</span>
+                            Print
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Menu Statistics -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🍽️</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalMenuCount">-</div>
+                            <div class="stat-label">Total Menu</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🍛</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="makananCount">-</div>
+                            <div class="stat-label">Makanan</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🥤</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="minumanCount">-</div>
+                            <div class="stat-label">Minuman</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🍪</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="snackCount">-</div>
+                            <div class="stat-label">Snack</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Table -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Daftar Menu</h3>
+                        <div class="card-actions">
+                            <span id="menuCount">0 menu</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="menuTableContainer">
+                            <div class="loading">Memuat data menu...</div>
+                        </div>
+                        <div id="paginationContainer"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Menu Modal -->
+    <div id="menuModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Tambah Menu</h3>
+                <button class="modal-close" onclick="closeModal('menuModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalAlertContainer"></div>
+                <form id="menuForm">
+                    <input type="hidden" id="menuId" name="id">
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Nama Menu *</label>
+                            <input type="text" id="menuName" name="name" class="form-input" required>
+                            <div class="error-message" data-error="name"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Kategori *</label>
+                            <select id="menuCategory" name="category" class="form-select" required>
+                                <option value="">Pilih Kategori</option>
+                                <option value="makanan">Makanan</option>
+                                <option value="minuman">Minuman</option>
+                                <option value="snack">Snack</option>
+                            </select>
+                            <div class="error-message" data-error="category"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Deskripsi *</label>
+                        <textarea id="menuDescription" name="description" class="form-textarea" required></textarea>
+                        <div class="error-message" data-error="description"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Harga *</label>
+                        <input type="number" id="menuPrice" name="price" class="form-input" min="0" required>
+                        <div class="error-message" data-error="price"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Gambar Menu</label>
+                        <input type="file" id="menuImage" name="image" class="form-input" accept="image/*">
+                        <div class="error-message" data-error="image"></div>
+                        <div id="imagePreview" style="margin-top: 10px; display: none;">
+                            <img id="previewImg" src="" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 8px;">
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('menuModal')">Batal</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <span id="submitText">Simpan</span>
+                            <span id="submitLoading" style="display: none;">⏳</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+    <script>
+        // Menu Management Variables
+        let menuData = [];
+        let filteredMenuData = [];
+        let currentSearchTerm = '';
+        let currentCategoryFilter = '';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadMenuData();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Search
+            setupSearch('searchInput', (term) => {
+                currentSearchTerm = term;
+                filterAndDisplayMenu();
+            });
+
+            // Category filter
+            setupFilter('categoryFilter', (category) => {
+                currentCategoryFilter = category;
+                filterAndDisplayMenu();
+            });
+
+            // Form submission
+            document.getElementById('menuForm').addEventListener('submit', handleMenuSubmit);
+
+            // Image upload
+            setupFileUpload('menuImage', {
+                allowedTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+                maxSize: 5 * 1024 * 1024, // 5MB
+                previewId: 'previewImg',
+                callback: (file) => {
+                    document.getElementById('imagePreview').style.display = 'block';
+                }
+            });
+        }
+
+        async function loadMenuData() {
+            try {
+                showLoading('menuTableContainer');
+                const result = await apiRequest('/menu');
+                
+                if (result.success) {
+                    menuData = result.data;
+                    updateMenuStatistics();
+                    filterAndDisplayMenu();
+                } else {
+                    showAlert('error', 'Gagal memuat data menu');
+                }
+            } catch (error) {
+                showAlert('error', 'Terjadi kesalahan saat memuat data menu');
+                console.error('Error loading menu data:', error);
+            }
+        }
+
+        function updateMenuStatistics() {
+            const total = menuData.length;
+            const makanan = menuData.filter(m => m.category === 'makanan').length;
+            const minuman = menuData.filter(m => m.category === 'minuman').length;
+            const snack = menuData.filter(m => m.category === 'snack').length;
+
+            document.getElementById('totalMenuCount').textContent = total;
+            document.getElementById('makananCount').textContent = makanan;
+            document.getElementById('minumanCount').textContent = minuman;
+            document.getElementById('snackCount').textContent = snack;
+        }
+
+        function filterAndDisplayMenu() {
+            filteredMenuData = menuData.filter(menu => {
+                const matchesSearch = !currentSearchTerm || 
+                    menu.name.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+                    menu.description.toLowerCase().includes(currentSearchTerm.toLowerCase());
+                
+                const matchesCategory = !currentCategoryFilter || menu.category === currentCategoryFilter;
+                
+                return matchesSearch && matchesCategory;
+            });
+
+            displayMenuTable();
+            document.getElementById('menuCount').textContent = `${filteredMenuData.length} menu`;
+        }
+
+        function displayMenuTable() {
+            const columns = [
+                { key: 'name', label: 'Nama Menu' },
+                { key: 'category', label: 'Kategori', format: (value) => {
+                    const categoryMap = { makanan: 'Makanan', minuman: 'Minuman', snack: 'Snack' };
+                    return categoryMap[value] || value;
+                }},
+                { key: 'description', label: 'Deskripsi', format: (value) => value.length > 50 ? value.substring(0, 50) + '...' : value },
+                { key: 'price', label: 'Harga', format: (value) => formatCurrency(value) },
+                { key: 'createdAt', label: 'Dibuat', format: (value) => formatDate(value) }
+            ];
+
+            const actions = [
+                { label: '✏️', class: 'btn-secondary', onclick: 'editMenu' },
+                { label: '🗑️', class: 'btn-danger', onclick: 'deleteMenu' }
+            ];
+
+            createTable(filteredMenuData, columns, 'menuTableContainer', { actions });
+        }
+
+        function openAddMenuModal() {
+            document.getElementById('modalTitle').textContent = 'Tambah Menu';
+            document.getElementById('menuForm').reset();
+            document.getElementById('menuId').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            hideAlert('modalAlertContainer');
+            openModal('menuModal');
+        }
+
+        function editMenu(id) {
+            const menu = menuData.find(m => m.id === id);
+            if (!menu) return;
+
+            document.getElementById('modalTitle').textContent = 'Edit Menu';
+            document.getElementById('menuId').value = menu.id;
+            document.getElementById('menuName').value = menu.name;
+            document.getElementById('menuCategory').value = menu.category;
+            document.getElementById('menuDescription').value = menu.description;
+            document.getElementById('menuPrice').value = menu.price;
+            
+            // Show current image if exists
+            if (menu.imageUrl) {
+                document.getElementById('previewImg').src = menu.imageUrl;
+                document.getElementById('imagePreview').style.display = 'block';
+            } else {
+                document.getElementById('imagePreview').style.display = 'none';
+            }
+
+            hideAlert('modalAlertContainer');
+            openModal('menuModal');
+        }
+
+        async function deleteMenu(id) {
+            const menu = menuData.find(m => m.id === id);
+            if (!menu) return;
+
+            confirmAction(`Apakah Anda yakin ingin menghapus menu "${menu.name}"?`, async () => {
+                try {
+                    const result = await apiRequest(`/menu/${id}`, { method: 'DELETE' });
+                    
+                    if (result.success) {
+                        showToast('Menu berhasil dihapus', 'success');
+                        loadMenuData();
+                    } else {
+                        showAlert('error', result.message || 'Gagal menghapus menu');
+                    }
+                } catch (error) {
+                    showAlert('error', 'Terjadi kesalahan saat menghapus menu');
+                    console.error('Error deleting menu:', error);
+                }
+            });
+        }
+
+        async function handleMenuSubmit(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            const submitLoading = document.getElementById('submitLoading');
+            
+            // Validate form
+            const isValid = validateForm('menuForm', {
+                name: { required: true, label: 'Nama Menu' },
+                category: { required: true, label: 'Kategori' },
+                description: { required: true, label: 'Deskripsi' },
+                price: { required: true, label: 'Harga' }
+            });
+
+            if (!isValid) return;
+
+            // Show loading
+            submitBtn.disabled = true;
+            submitText.style.display = 'none';
+            submitLoading.style.display = 'inline';
+            hideAlert('modalAlertContainer');
+
+            try {
+                const formData = new FormData();
+                const menuId = document.getElementById('menuId').value;
+                
+                formData.append('name', document.getElementById('menuName').value);
+                formData.append('category', document.getElementById('menuCategory').value);
+                formData.append('description', document.getElementById('menuDescription').value);
+                formData.append('price', document.getElementById('menuPrice').value);
+                
+                const imageFile = document.getElementById('menuImage').files[0];
+                if (imageFile) {
+                    formData.append('image', imageFile);
+                }
+
+                const endpoint = menuId ? `/menu/${menuId}` : '/menu/with-image';
+                const method = menuId ? 'PUT' : 'POST';
+
+                const result = await fetch(`http://localhost:5283/api${endpoint}`, {
+                    method: method,
+                    body: formData
+                }).then(res => res.json());
+
+                if (result.success) {
+                    showToast(menuId ? 'Menu berhasil diupdate' : 'Menu berhasil ditambahkan', 'success');
+                    closeModal('menuModal');
+                    loadMenuData();
+                } else {
+                    showAlert('error', result.message || 'Gagal menyimpan menu', 'modalAlertContainer');
+                }
+            } catch (error) {
+                showAlert('error', 'Terjadi kesalahan saat menyimpan menu', 'modalAlertContainer');
+                console.error('Error saving menu:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitText.style.display = 'inline';
+                submitLoading.style.display = 'none';
+            }
+        }
+
+        function exportMenuData() {
+            const columns = [
+                { key: 'name', label: 'Nama Menu' },
+                { key: 'category', label: 'Kategori' },
+                { key: 'description', label: 'Deskripsi' },
+                { key: 'price', label: 'Harga' },
+                { key: 'createdAt', label: 'Tanggal Dibuat', format: (value) => formatDate(value) }
+            ];
+
+            exportToCSV(filteredMenuData, 'menu-data.csv', columns);
+        }
+
+        function printMenuData() {
+            printTable('menuTableContainer', 'Data Menu LupyCanteen');
+        }
+    </script>
+</body>
+</html>

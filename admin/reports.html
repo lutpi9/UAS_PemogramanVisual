@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan - LupyCanteen Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">🍱</span>
+                    <span class="logo-text">LupyCanteen</span>
+                </div>
+                <div class="admin-info">
+                    <div class="admin-avatar">👤</div>
+                    <div class="admin-details">
+                        <div class="admin-name" id="adminName">Admin</div>
+                        <div class="admin-role" id="adminRole">Administrator</div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <span class="nav-icon">📊</span>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="menu-management.html" class="nav-link">
+                            <span class="nav-icon">🍽️</span>
+                            <span class="nav-text">Manajemen Menu</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="user-management.html" class="nav-link">
+                            <span class="nav-icon">👥</span>
+                            <span class="nav-text">Manajemen Karyawan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="order-management.html" class="nav-link">
+                            <span class="nav-icon">📋</span>
+                            <span class="nav-text">Manajemen Pesanan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="reports.html" class="nav-link active">
+                            <span class="nav-icon">📈</span>
+                            <span class="nav-text">Laporan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="settings.html" class="nav-link">
+                            <span class="nav-icon">⚙️</span>
+                            <span class="nav-text">Pengaturan</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Laporan</h1>
+                    <p class="page-subtitle">Analisis dan laporan penjualan LupyCanteen</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-secondary" onclick="refreshReports()">
+                        <span>🔄</span>
+                        Refresh
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- Alert Container -->
+                <div id="alertContainer"></div>
+
+                <!-- Report Filters -->
+                <div class="form-container">
+                    <div class="search-filter-bar">
+                        <select id="reportType" class="form-select">
+                            <option value="sales">Laporan Penjualan</option>
+                            <option value="menu">Laporan Menu</option>
+                            <option value="customer">Laporan Pelanggan</option>
+                        </select>
+                        <select id="periodFilter" class="form-select">
+                            <option value="today">Hari Ini</option>
+                            <option value="week">Minggu Ini</option>
+                            <option value="month">Bulan Ini</option>
+                            <option value="year">Tahun Ini</option>
+                            <option value="custom">Periode Kustom</option>
+                        </select>
+                        <input type="date" id="startDate" class="form-input" style="display: none;">
+                        <input type="date" id="endDate" class="form-input" style="display: none;">
+                        <button class="btn btn-primary" onclick="generateReport()">
+                            <span>📊</span>
+                            Generate Laporan
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportReport()">
+                            <span>📄</span>
+                            Export PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Report Summary -->
+                <div class="stats-grid" id="reportSummary">
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalRevenue">-</div>
+                            <div class="stat-label">Total Pendapatan</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalOrders">-</div>
+                            <div class="stat-label">Total Pesanan</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🍽️</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalItems">-</div>
+                            <div class="stat-label">Item Terjual</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="avgOrderValue">-</div>
+                            <div class="stat-label">Rata-rata Pesanan</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Grafik Penjualan</h3>
+                            <div class="card-actions">
+                                <select id="chartType" onchange="updateChart()">
+                                    <option value="line">Line Chart</option>
+                                    <option value="bar">Bar Chart</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="salesChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Top Menu</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="menuChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Reports -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title" id="reportTitle">Laporan Detail</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="printReport()">
+                                <span>🖨️</span>
+                                Print
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="reportTableContainer">
+                            <div class="no-data">Pilih jenis laporan dan periode untuk melihat data</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Metrics -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Metrik Performa</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="metrics-list" id="performanceMetrics">
+                                <div class="loading">Memuat metrik...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Tren Penjualan</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="trend-list" id="salesTrends">
+                                <div class="loading">Memuat tren...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="admin-script.js"></script>
+    <script>
+        // Report Variables
+        let currentReportData = null;
+        let salesChart = null;
+        let menuChart = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            setupEventListeners();
+            loadInitialData();
+        });
+
+        function checkAuth() {
+            const userData = localStorage.getItem('lupycanteen_user');
+            if (!userData) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const user = JSON.parse(userData);
+            if (user.role !== 'Admin' && user.role !== 'Kasir') {
+                alert('Akses ditolak. Anda tidak memiliki hak akses admin.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Update admin info
+            document.getElementById('adminName').textContent = user.fullName;
+            document.getElementById('adminRole').textContent = user.role;
+        }
+
+        function setupEventListeners() {
+            // Period filter change
+            document.getElementById('periodFilter').addEventListener('change', function() {
+                const customDateInputs = document.querySelectorAll('#startDate, #endDate');
+                if (this.value === 'custom') {
+                    customDateInputs.forEach(input => input.style.display = 'block');
+                } else {
+                    customDateInputs.forEach(input => input.style.display = 'none');
+                }
+            });
+
+            // Report type change
+            document.getElementById('reportType').addEventListener('change', function() {
+                updateReportTitle();
+            });
+        }
+
+        function updateReportTitle() {
+            const reportType = document.getElementById('reportType').value;
+            const titles = {
+                'sales': 'Laporan Penjualan Detail',
+                'menu': 'Laporan Menu Detail',
+                'customer': 'Laporan Pelanggan Detail'
+            };
+            document.getElementById('reportTitle').textContent = titles[reportType] || 'Laporan Detail';
+        }
+
+        async function loadInitialData() {
+            try {
+                await generateReport();
+                await loadPerformanceMetrics();
+                await loadSalesTrends();
+            } catch (error) {
+                console.error('Error loading initial data:', error);
+            }
+        }
+
+        async function generateReport() {
+            try {
+                showLoading('reportTableContainer');
+                
+                const reportType = document.getElementById('reportType').value;
+                const period = document.getElementById('periodFilter').value;
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+
+                let endpoint = `/dashboard/reports/${reportType}?period=${period}`;
+                if (period === 'custom' && startDate && endDate) {
+                    endpoint += `&startDate=${startDate}&endDate=${endDate}`;
+                }
+
+                const result = await apiRequest(endpoint);
+                
+                if (result.success) {
+                    currentReportData = result.data;
+                    updateReportSummary(result.data.summary);
+                    displayReportTable(result.data.details, reportType);
+                    updateCharts(result.data.charts);
+                } else {
+                    showAlert('error', 'Gagal memuat laporan');
+                }
+            } catch (error) {
+                showAlert('error', 'Terjadi kesalahan saat memuat laporan');
+                console.error('Error generating report:', error);
+            }
+        }
+
+        function updateReportSummary(summary) {
+            document.getElementById('totalRevenue').textContent = formatCurrency(summary.totalRevenue || 0);
+            document.getElementById('totalOrders').textContent = summary.totalOrders || 0;
+            document.getElementById('totalItems').textContent = summary.totalItems || 0;
+            document.getElementById('avgOrderValue').textContent = formatCurrency(summary.avgOrderValue || 0);
+        }
+
+        function displayReportTable(data, reportType) {
+            let columns = [];
+            
+            switch (reportType) {
+                case 'sales':
+                    columns = [
+                        { key: 'date', label: 'Tanggal', format: (value) => formatDate(value) },
+                        { key: 'orders', label: 'Pesanan' },
+                        { key: 'revenue', label: 'Pendapatan', format: (value) => formatCurrency(value) },
+                        { key: 'items', label: 'Item Terjual' },
+                        { key: 'avgOrder', label: 'Rata-rata', format: (value) => formatCurrency(value) }
+                    ];
+                    break;
+                case 'menu':
+                    columns = [
+                        { key: 'name', label: 'Nama Menu' },
+                        { key: 'category', label: 'Kategori' },
+                        { key: 'sold', label: 'Terjual' },
+                        { key: 'revenue', label: 'Pendapatan', format: (value) => formatCurrency(value) },
+                        { key: 'percentage', label: 'Persentase', format: (value) => `${value}%` }
+                    ];
+                    break;
+                case 'customer':
+                    columns = [
+                        { key: 'name', label: 'Nama Pelanggan' },
+                        { key: 'email', label: 'Email' },
+                        { key: 'orders', label: 'Total Pesanan' },
+                        { key: 'spent', label: 'Total Belanja', format: (value) => formatCurrency(value) },
+                        { key: 'lastOrder', label: 'Pesanan Terakhir', format: (value) => formatDate(value) }
+                    ];
+                    break;
+            }
+
+            createTable(data, columns, 'reportTableContainer');
+        }
+
+        function updateCharts(chartData) {
+            // Update Sales Chart
+            updateSalesChart(chartData.sales);
+            
+            // Update Menu Chart
+            updateMenuChart(chartData.menu);
+        }
+
+        function updateSalesChart(data) {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            
+            if (salesChart) {
+                salesChart.destroy();
+            }
+
+            const chartType = document.getElementById('chartType').value;
+
+            salesChart = new Chart(ctx, {
+                type: chartType,
+                data: {
+                    labels: data.map(item => formatDate(item.date)),
+                    datasets: [{
+                        label: 'Pendapatan',
+                        data: data.map(item => item.revenue),
+                        borderColor: '#A8D8EA',
+                        backgroundColor: chartType === 'bar' ? 'rgba(168, 216, 234, 0.8)' : 'rgba(168, 216, 234, 0.1)',
+                        tension: 0.4,
+                        fill: chartType === 'line'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateMenuChart(data) {
+            const ctx = document.getElementById('menuChart').getContext('2d');
+            
+            if (menuChart) {
+                menuChart.destroy();
+            }
+
+            menuChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.map(item => item.name),
+                    datasets: [{
+                        data: data.map(item => item.sold),
+                        backgroundColor: [
+                            '#A8D8EA',
+                            '#FFB3D9',
+                            '#B8E6B8',
+                            '#FFD93D',
+                            '#FF9999',
+                            '#C8A8E9'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChart() {
+            if (currentReportData && currentReportData.charts) {
+                updateSalesChart(currentReportData.charts.sales);
+            }
+        }
+
+        async function loadPerformanceMetrics() {
+            try {
+                const result = await apiRequest('/dashboard/performance-metrics');
+                
+                if (result.success) {
+                    displayPerformanceMetrics(result.data);
+                }
+            } catch (error) {
+                document.getElementById('performanceMetrics').innerHTML = '<div class="no-data">Gagal memuat metrik</div>';
+                console.error('Error loading performance metrics:', error);
+            }
+        }
+
+        function displayPerformanceMetrics(metrics) {
+            const html = metrics.map(metric => `
+                <div class="metric-item">
+                    <div class="metric-label">${metric.label}</div>
+                    <div class="metric-value ${metric.trend}">${metric.value}</div>
+                    <div class="metric-change">${metric.change}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('performanceMetrics').innerHTML = html;
+        }
+
+        async function loadSalesTrends() {
+            try {
+                const result = await apiRequest('/dashboard/sales-trends');
+                
+                if (result.success) {
+                    displaySalesTrends(result.data);
+                }
+            } catch (error) {
+                document.getElementById('salesTrends').innerHTML = '<div class="no-data">Gagal memuat tren</div>';
+                console.error('Error loading sales trends:', error);
+            }
+        }
+
+        function displaySalesTrends(trends) {
+            const html = trends.map(trend => `
+                <div class="trend-item">
+                    <div class="trend-icon">${trend.icon}</div>
+                    <div class="trend-content">
+                        <div class="trend-title">${trend.title}</div>
+                        <div class="trend-description">${trend.description}</div>
+                    </div>
+                    <div class="trend-value ${trend.type}">${trend.value}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('salesTrends').innerHTML = html;
+        }
+
+        function refreshReports() {
+            generateReport();
+            loadPerformanceMetrics();
+            loadSalesTrends();
+            showToast('Laporan berhasil direfresh', 'success');
+        }
+
+        function exportReport() {
+            if (!currentReportData) {
+                showAlert('error', 'Tidak ada data untuk diekspor');
+                return;
+            }
+
+            // Simple PDF export using jsPDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add title
+            doc.setFontSize(20);
+            doc.text('Laporan LupyCanteen', 20, 20);
+            
+            // Add date
+            doc.setFontSize(12);
+            doc.text(`Tanggal: ${new Date().toLocaleDateString('id-ID')}`, 20, 35);
+            
+            // Add summary
+            let yPos = 50;
+            doc.setFontSize(14);
+            doc.text('Ringkasan:', 20, yPos);
+            yPos += 10;
+            
+            doc.setFontSize(10);
+            const summary = currentReportData.summary;
+            doc.text(`Total Pendapatan: ${formatCurrency(summary.totalRevenue)}`, 20, yPos);
+            yPos += 8;
+            doc.text(`Total Pesanan: ${summary.totalOrders}`, 20, yPos);
+            yPos += 8;
+            doc.text(`Item Terjual: ${summary.totalItems}`, 20, yPos);
+            yPos += 8;
+            doc.text(`Rata-rata Pesanan: ${formatCurrency(summary.avgOrderValue)}`, 20, yPos);
+            
+            // Save PDF
+            doc.save('laporan-lupycanteen.pdf');
+        }
+
+        function printReport() {
+            window.print();
+        }
+    </script>
+
+    <style>
+        .metrics-list, .trend-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .metric-item, .trend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .metric-label, .trend-title {
+            font-weight: 500;
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        .metric-value {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .metric-value.positive {
+            color: #16a34a;
+        }
+
+        .metric-value.negative {
+            color: #dc2626;
+        }
+
+        .metric-change {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .trend-item {
+            gap: 12px;
+        }
+
+        .trend-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #A8D8EA 0%, #FFB3D9 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .trend-content {
+            flex: 1;
+        }
+
+        .trend-description {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .trend-value {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .trend-value.up {
+            color: #16a34a;
+        }
+
+        .trend-value.down {
+            color: #dc2626;
+        }
+
+        .trend-value.stable {
+            color: #64748b;
+        }
+
+        @media print {
+            .sidebar, .content-header, .btn, .card-actions {
+                display: none !important;
+            }
+            
+            .main-content {
+                margin-left: 0 !important;
+            }
+            
+            .dashboard-card {
+                break-inside: avoid;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</body>
+</html>

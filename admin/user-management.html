@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Karyawan - LupyCanteen Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">🍱</span>
+                    <span class="logo-text">LupyCanteen</span>
+                </div>
+                <div class="admin-info">
+                    <div class="admin-avatar">👤</div>
+                    <div class="admin-details">
+                        <div class="admin-name" id="adminName">Admin</div>
+                        <div class="admin-role" id="adminRole">Administrator</div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <span class="nav-icon">📊</span>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="menu-management.html" class="nav-link">
+                            <span class="nav-icon">🍽️</span>
+                            <span class="nav-text">Manajemen Menu</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="user-management.html" class="nav-link active">
+                            <span class="nav-icon">👥</span>
+                            <span class="nav-text">Manajemen Karyawan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="order-management.html" class="nav-link">
+                            <span class="nav-icon">📋</span>
+                            <span class="nav-text">Manajemen Pesanan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="reports.html" class="nav-link">
+                            <span class="nav-icon">📈</span>
+                            <span class="nav-text">Laporan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="settings.html" class="nav-link">
+                            <span class="nav-icon">⚙️</span>
+                            <span class="nav-text">Pengaturan</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Manajemen Karyawan</h1>
+                    <p class="page-subtitle">Kelola data karyawan dan hak akses sistem</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-primary" onclick="openAddUserModal()">
+                        <span>➕</span>
+                        Tambah Karyawan
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- Alert Container -->
+                <div id="alertContainer"></div>
+
+                <!-- Search and Filter -->
+                <div class="form-container">
+                    <div class="search-filter-bar">
+                        <input type="text" id="searchInput" class="form-input search-input" placeholder="Cari karyawan...">
+                        <select id="roleFilter" class="form-select filter-select">
+                            <option value="">Semua Role</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Kasir">Kasir</option>
+                            <option value="User">User</option>
+                        </select>
+                        <select id="statusFilter" class="form-select filter-select">
+                            <option value="">Semua Status</option>
+                            <option value="true">Aktif</option>
+                            <option value="false">Nonaktif</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="exportUserData()">
+                            <span>📊</span>
+                            Export CSV
+                        </button>
+                    </div>
+                </div>
+
+                <!-- User Statistics -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalUserCount">-</div>
+                            <div class="stat-label">Total Karyawan</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👑</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="adminCount">-</div>
+                            <div class="stat-label">Admin</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💼</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="kasirCount">-</div>
+                            <div class="stat-label">Kasir</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="activeUserCount">-</div>
+                            <div class="stat-label">Aktif</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Table -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Daftar Karyawan</h3>
+                        <div class="card-actions">
+                            <span id="userCount">0 karyawan</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="userTableContainer">
+                            <div class="loading">Memuat data karyawan...</div>
+                        </div>
+                        <div id="paginationContainer"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit User Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Tambah Karyawan</h3>
+                <button class="modal-close" onclick="closeModal('userModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalAlertContainer"></div>
+                <form id="userForm">
+                    <input type="hidden" id="userId" name="id">
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Username *</label>
+                            <input type="text" id="username" name="username" class="form-input" required>
+                            <div class="error-message" data-error="username"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Email *</label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                            <div class="error-message" data-error="email"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Nama Lengkap *</label>
+                        <input type="text" id="fullName" name="fullName" class="form-input" required>
+                        <div class="error-message" data-error="fullName"></div>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Role *</label>
+                            <select id="role" name="role" class="form-select" required>
+                                <option value="">Pilih Role</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Kasir">Kasir</option>
+                                <option value="User">User</option>
+                            </select>
+                            <div class="error-message" data-error="role"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">No. Telepon</label>
+                            <input type="tel" id="phone" name="phone" class="form-input">
+                            <div class="error-message" data-error="phone"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Alamat</label>
+                        <textarea id="address" name="address" class="form-textarea"></textarea>
+                        <div class="error-message" data-error="address"></div>
+                    </div>
+                    
+                    <div class="form-group" id="passwordGroup">
+                        <label class="form-label">Password *</label>
+                        <input type="password" id="password" name="password" class="form-input" required>
+                        <div class="error-message" data-error="password"></div>
+                        <small class="form-help">Minimal 6 karakter</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <input type="checkbox" id="isActive" name="isActive" checked>
+                            Aktif
+                        </label>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('userModal')">Batal</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <span id="submitText">Simpan</span>
+                            <span id="submitLoading" style="display: none;">⏳</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Ubah Password</h3>
+                <button class="modal-close" onclick="closeModal('passwordModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="passwordModalAlertContainer"></div>
+                <form id="passwordForm">
+                    <input type="hidden" id="passwordUserId">
+                    
+                    <div class="form-group">
+                        <label class="form-label">Password Baru *</label>
+                        <input type="password" id="newPassword" class="form-input" required>
+                        <div class="error-message" data-error="newPassword"></div>
+                        <small class="form-help">Minimal 6 karakter</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Konfirmasi Password *</label>
+                        <input type="password" id="confirmPassword" class="form-input" required>
+                        <div class="error-message" data-error="confirmPassword"></div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('passwordModal')">Batal</button>
+                        <button type="submit" class="btn btn-primary" id="passwordSubmitBtn">
+                            <span id="passwordSubmitText">Ubah Password</span>
+                            <span id="passwordSubmitLoading" style="display: none;">⏳</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+    <script>
+        // User Management Variables
+        let userData = [];
+        let filteredUserData = [];
+        let currentSearchTerm = '';
+        let currentRoleFilter = '';
+        let currentStatusFilter = '';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadUserData();
+            setupEventListeners();
+        });
+
+        function checkAuth() {
+            const userData = localStorage.getItem('lupycanteen_user');
+            if (!userData) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const user = JSON.parse(userData);
+            if (user.role !== 'Admin') {
+                alert('Akses ditolak. Hanya Admin yang dapat mengakses halaman ini.');
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // Update admin info
+            document.getElementById('adminName').textContent = user.fullName;
+            document.getElementById('adminRole').textContent = user.role;
+        }
+
+        function setupEventListeners() {
+            // Search
+            setupSearch('searchInput', (term) => {
+                currentSearchTerm = term;
+                filterAndDisplayUsers();
+            });
+
+            // Role filter
+            setupFilter('roleFilter', (role) => {
+                currentRoleFilter = role;
+                filterAndDisplayUsers();
+            });
+
+            // Status filter
+            setupFilter('statusFilter', (status) => {
+                currentStatusFilter = status;
+                filterAndDisplayUsers();
+            });
+
+            // Form submissions
+            document.getElementById('userForm').addEventListener('submit', handleUserSubmit);
+            document.getElementById('passwordForm').addEventListener('submit', handlePasswordSubmit);
+        }
+
+        async function loadUserData() {
+            try {
+                showLoading('userTableContainer');
+                const result = await apiRequest('/user');
+                
+                if (result.success) {
+                    userData = result.data;
+                    updateUserStatistics();
+                    filterAndDisplayUsers();
+                } else {
+                    showAlert('error', 'Gagal memuat data karyawan');
+                }
+            } catch (error) {
+                showAlert('error', 'Terjadi kesalahan saat memuat data karyawan');
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        function updateUserStatistics() {
+            const total = userData.length;
+            const admin = userData.filter(u => u.role === 'Admin').length;
+            const kasir = userData.filter(u => u.role === 'Kasir').length;
+            const active = userData.filter(u => u.isActive).length;
+
+            document.getElementById('totalUserCount').textContent = total;
+            document.getElementById('adminCount').textContent = admin;
+            document.getElementById('kasirCount').textContent = kasir;
+            document.getElementById('activeUserCount').textContent = active;
+        }
+
+        function filterAndDisplayUsers() {
+            filteredUserData = userData.filter(user => {
+                const matchesSearch = !currentSearchTerm || 
+                    user.username.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+                    user.fullName.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+                    user.email.toLowerCase().includes(currentSearchTerm.toLowerCase());
+                
+                const matchesRole = !currentRoleFilter || user.role === currentRoleFilter;
+                const matchesStatus = !currentStatusFilter || user.isActive.toString() === currentStatusFilter;
+                
+                return matchesSearch && matchesRole && matchesStatus;
+            });
+
+            displayUserTable();
+            document.getElementById('userCount').textContent = `${filteredUserData.length} karyawan`;
+        }
+
+        function displayUserTable() {
+            const columns = [
+                { key: 'username', label: 'Username' },
+                { key: 'fullName', label: 'Nama Lengkap' },
+                { key: 'email', label: 'Email' },
+                { key: 'role', label: 'Role', format: (value) => {
+                    const roleColors = { Admin: '#dc2626', Kasir: '#2563eb', User: '#16a34a' };
+                    return `<span style="color: ${roleColors[value] || '#64748b'}">${value}</span>`;
+                }},
+                { key: 'phone', label: 'Telepon', format: (value) => value || '-' },
+                { key: 'isActive', label: 'Status', format: (value) => 
+                    `<span class="status-badge ${value ? 'status-completed' : 'status-cancelled'}">${value ? 'Aktif' : 'Nonaktif'}</span>`
+                },
+                { key: 'createdAt', label: 'Dibuat', format: (value) => formatDate(value) }
+            ];
+
+            const actions = [
+                { label: '✏️', class: 'btn-secondary', onclick: 'editUser' },
+                { label: '🔑', class: 'btn-warning', onclick: 'changePassword' },
+                { label: '🗑️', class: 'btn-danger', onclick: 'deleteUser' }
+            ];
+
+            createTable(filteredUserData, columns, 'userTableContainer', { actions });
+        }
+
+        function openAddUserModal() {
+            document.getElementById('modalTitle').textContent = 'Tambah Karyawan';
+            document.getElementById('userForm').reset();
+            document.getElementById('userId').value = '';
+            document.getElementById('isActive').checked = true;
+            document.getElementById('passwordGroup').style.display = 'block';
+            document.getElementById('password').required = true;
+            hideAlert('modalAlertContainer');
+            openModal('userModal');
+        }
+
+        function editUser(id) {
+            const user = userData.find(u => u.id === id);
+            if (!user) return;
+
+            document.getElementById('modalTitle').textContent = 'Edit Karyawan';
+            document.getElementById('userId').value = user.id;
+            document.getElementById('username').value = user.username;
+            document.getElementById('email').value = user.email;
+            document.getElementById('fullName').value = user.fullName;
+            document.getElementById('role').value = user.role;
+            document.getElementById('phone').value = user.phone || '';
+            document.getElementById('address').value = user.address || '';
+            document.getElementById('isActive').checked = user.isActive;
+            
+            // Hide password field for edit
+            document.getElementById('passwordGroup').style.display = 'none';
+            document.getElementById('password').required = false;
+
+            hideAlert('modalAlertContainer');
+            openModal('userModal');
+        }
+
+        function changePassword(id) {
+            const user = userData.find(u => u.id === id);
+            if (!user) return;
+
+            document.getElementById('passwordUserId').value = id;
+            document.getElementById('passwordForm').reset();
+            hideAlert('passwordModalAlertContainer');
+            openModal('passwordModal');
+        }
+
+        async function deleteUser(id) {
+            const user = userData.find(u => u.id === id);
+            if (!user) return;
+
+            // Prevent deleting current user
+            const currentUser = JSON.parse(localStorage.getItem('lupycanteen_user'));
+            if (user.id === currentUser.userId) {
+                showAlert('error', 'Anda tidak dapat menghapus akun sendiri');
+                return;
+            }
+
+            confirmAction(`Apakah Anda yakin ingin menghapus karyawan "${user.fullName}"?`, async () => {
+                try {
+                    const result = await apiRequest(`/user/${id}`, { method: 'DELETE' });
+                    
+                    if (result.success) {
+                        showToast('Karyawan berhasil dihapus', 'success');
+                        loadUserData();
+                    } else {
+                        showAlert('error', result.message || 'Gagal menghapus karyawan');
+                    }
+                } catch (error) {
+                    showAlert('error', 'Terjadi kesalahan saat menghapus karyawan');
+                    console.error('Error deleting user:', error);
+                }
+            });
+        }
+
+        async function handleUserSubmit(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            const submitLoading = document.getElementById('submitLoading');
+            
+            // Validate form
+            const validationRules = {
+                username: { required: true, label: 'Username', minLength: 3 },
+                email: { required: true, label: 'Email', email: true },
+                fullName: { required: true, label: 'Nama Lengkap' },
+                role: { required: true, label: 'Role' }
+            };
+
+            const userId = document.getElementById('userId').value;
+            if (!userId) {
+                validationRules.password = { required: true, label: 'Password', minLength: 6 };
+            }
+
+            const isValid = validateForm('userForm', validationRules);
+            if (!isValid) return;
+
+            // Show loading
+            submitBtn.disabled = true;
+            submitText.style.display = 'none';
+            submitLoading.style.display = 'inline';
+            hideAlert('modalAlertContainer');
+
+            try {
+                const formData = {
+                    username: document.getElementById('username').value,
+                    email: document.getElementById('email').value,
+                    fullName: document.getElementById('fullName').value,
+                    role: document.getElementById('role').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    isActive: document.getElementById('isActive').checked
+                };
+
+                if (!userId) {
+                    formData.password = document.getElementById('password').value;
+                }
+
+                const endpoint = userId ? `/user/${userId}` : '/user';
+                const method = userId ? 'PUT' : 'POST';
+
+                const result = await apiRequest(endpoint, {
+                    method: method,
+                    body: JSON.stringify(formData)
+                });
+
+                if (result.success) {
+                    showToast(userId ? 'Karyawan berhasil diupdate' : 'Karyawan berhasil ditambahkan', 'success');
+                    closeModal('userModal');
+                    loadUserData();
+                } else {
+                    showAlert('error', result.message || 'Gagal menyimpan karyawan', 'modalAlertContainer');
+                }
+            } catch (error) {
+                showAlert('error', 'Terjadi kesalahan saat menyimpan karyawan', 'modalAlertContainer');
+                console.error('Error saving user:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitText.style.display = 'inline';
+                submitLoading.style.display = 'none';
+            }
+        }
+
+        async function handlePasswordSubmit(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('passwordSubmitBtn');
+            const submitText = document.getElementById('passwordSubmitText');
+            const submitLoading = document.getElementById('passwordSubmitLoading');
+            
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validate passwords
+            if (newPassword.length < 6) {
+                showAlert('error', 'Password minimal 6 karakter', 'passwordModalAlertContainer');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showAlert('error', 'Konfirmasi password tidak cocok', 'passwordModalAlertContainer');
+                return;
+            }
+
+            // Show loading
+            submitBtn.disabled = true;
+            submitText.style.display = 'none';
+            submitLoading.style.display = 'inline';
+            hideAlert('passwordModalAlertContainer');
+
+            try {
+                const userId = document.getElementById('passwordUserId').value;
+                const result = await apiRequest(`/user/${userId}/change-password`, {
+                    method: 'POST',
+                    body: JSON.stringify({ newPassword })
+                });
+
+                if (result.success) {
+                    showToast('Password berhasil diubah', 'success');
+                    closeModal('passwordModal');
+                } else {
+                    showAlert('error', result.message || 'Gagal mengubah password', 'passwordModalAlertContainer');
+                }
+            } catch (error) {
+                showAlert('error', 'Terjadi kesalahan saat mengubah password', 'passwordModalAlertContainer');
+                console.error('Error changing password:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitText.style.display = 'inline';
+                submitLoading.style.display = 'none';
+            }
+        }
+
+        function exportUserData() {
+            const columns = [
+                { key: 'username', label: 'Username' },
+                { key: 'fullName', label: 'Nama Lengkap' },
+                { key: 'email', label: 'Email' },
+                { key: 'role', label: 'Role' },
+                { key: 'phone', label: 'Telepon' },
+                { key: 'isActive', label: 'Status', format: (value) => value ? 'Aktif' : 'Nonaktif' },
+                { key: 'createdAt', label: 'Tanggal Dibuat', format: (value) => formatDate(value) }
+            ];
+
+            exportToCSV(filteredUserData, 'karyawan-data.csv', columns);
+        }
+    </script>
+</body>
+</html>

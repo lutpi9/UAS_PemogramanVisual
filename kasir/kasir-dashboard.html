@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Kasir - LupyCanteen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="kasir-style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍱</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="kasir-header">
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="logo">
+                    <span class="logo-icon">🍱</span>
+                    <div class="logo-text-group">
+                        <span class="logo-text">LupyCanteen</span>
+                        <span class="logo-subtitle">Point of Sale System</span>
+                    </div>
+                    <span class="kasir-badge">KASIR</span>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="current-time">
+                    <div class="time-display" id="headerTime">--:--:--</div>
+                    <div class="date-display" id="headerDate">-- --- ----</div>
+                </div>
+            </div>
+            <div class="header-info">
+                <div class="kasir-info">
+                    <div class="kasir-avatar">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="kasir-details">
+                        <div class="kasir-name" id="kasirName">Kasir Satu</div>
+                        <div class="kasir-role">Kasir • Shift Pagi</div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-refresh" onclick="refreshMenuData()" title="Refresh menu dari database">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M1 4V10H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3.51 15A9 9 0 1 0 6 5L1 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Refresh Menu</span>
+                    </button>
+                    <button class="btn-cleanup" onclick="cleanupUnwantedMenus()" title="Hapus menu yang tidak diinginkan dari database">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M3 6H5H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2C10.5304 2 11.0391 2.21071 11.4142 2.58579C11.7893 2.96086 12 3.46957 12 4V6M15 6V16C15 16.5304 14.7893 17.0391 14.4142 17.4142C14.0391 17.7893 13.5304 18 13 18H7C6.46957 18 5.96086 17.7893 5.58579 17.4142C5.21071 17.0391 5 16.5304 5 16V6H15Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Cleanup Menu</span>
+                
+                    </button>
+                    <button class="btn-notification" onclick="showNotifications()">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M15 6.66667C15 5.34058 14.4732 4.06881 13.5355 3.13115C12.5979 2.19349 11.3261 1.66667 10 1.66667C8.67392 1.66667 7.40215 2.19349 6.46447 3.13115C5.52678 4.06881 5 5.34058 5 6.66667C5 12.5 2.5 14.1667 2.5 14.1667H17.5C17.5 14.1667 15 12.5 15 6.66667Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M11.4417 17.5C11.2952 17.7526 11.0849 17.9622 10.8319 18.1079C10.5789 18.2537 10.292 18.3304 10 18.3304C9.70803 18.3304 9.42117 18.2537 9.16816 18.1079C8.91514 17.9622 8.70485 17.7526 8.55835 17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <button class="btn-logout" onclick="logout()">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7 17L2 17C1.44772 17 1 16.5523 1 16L1 4C1 3.44772 1.44772 3 2 3L7 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M13 13L16 10L13 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M16 10L7 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="kasir-main">
+        <!-- Quick Stats -->
+        <section class="quick-stats">
+            <div class="stats-header">
+                <h2>📊 Dashboard Overview</h2>
+                <div class="stats-period">
+                    <select id="statsPeriod" onchange="updateStatsPeriod()">
+                        <option value="today">Hari Ini</option>
+                        <option value="week">Minggu Ini</option>
+                        <option value="month">Bulan Ini</option>
+                    </select>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                                <path d="M9 11H15M9 15H15M17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3H12.5858C12.851 3 13.1054 3.10536 13.2929 3.29289L19.7071 9.70711C19.8946 9.89464 20 10.149 20 10.4142V19C20 20.1046 19.1046 21 18 21H17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="stat-trend up">+12%</div>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="todayOrders">0</div>
+                        <div class="stat-label">Pesanan Hari Ini</div>
+                        <div class="stat-sublabel">Target: 50 pesanan</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card success">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2V22M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6312 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6312 13.6815 18 14.5717 18 15.5C18 16.4283 17.6312 17.3185 16.9749 17.9749C16.3185 18.6312 15.4283 19 14.5 19H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="stat-trend up">+8%</div>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="todayRevenue">Rp 0</div>
+                        <div class="stat-label">Pendapatan Hari Ini</div>
+                        <div class="stat-sublabel">Target: Rp 2.000.000</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card warning">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                                <path d="M3 12L5 10M5 10L12 3L19 10M5 10V20C5 20.5523 5.44772 21 6 21H9M19 10L21 12M19 10V20C19 20.5523 18.5523 21 18 21H15M9 21C9.55228 21 10 20.5523 10 20V16C10 15.4477 10.4477 15 11 15H13C13.5523 15 14 15.4477 14 16V20C14 20.5523 14.4477 21 15 21M9 21H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="stat-trend neutral">--</div>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="totalMenus">0</div>
+                        <div class="stat-label">Total Menu Tersedia</div>
+                        <div class="stat-sublabel">Semua kategori</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card info">
+                    <div class="stat-header">
+                        <div class="stat-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <polyline points="12,6 12,12 16,14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="stat-trend neutral">Live</div>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="currentTime">--:--</div>
+                        <div class="stat-label">Waktu Sekarang</div>
+                        <div class="stat-sublabel" id="currentDate">-- --- ----</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Actions -->
+        <section class="main-actions">
+            <div class="actions-header">
+                <h2>🚀 Aksi Utama</h2>
+                <div class="quick-shortcuts">
+                    <span class="shortcut-hint">Shortcut: F1-F4</span>
+                </div>
+            </div>
+            <div class="action-grid">
+                <div class="action-card primary" onclick="showSection('pos')">
+                    <div class="action-header">
+                        <div class="action-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                                <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V17C17 18.1 16.1 19 15 19H9C7.9 19 7 18.1 7 17V13M9 22C9.6 22 10 21.6 10 21S9.6 20 9 20 8 20.4 8 21 8.4 22 9 22ZM20 22C20.6 22 21 21.6 21 21S20.6 20 20 20 19 20.4 19 21 19.4 22 20 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="action-shortcut">F1</div>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Point of Sale</div>
+                        <div class="action-desc">Proses pesanan dan pembayaran dengan sistem POS lengkap</div>
+                        <div class="action-features">
+                            <span class="feature-tag">🛒 Keranjang</span>
+                            <span class="feature-tag">🖨️ Cetak Struk</span>
+                            <span class="feature-tag">💳 Pembayaran</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-card success" onclick="showSection('orders')">
+                    <div class="action-header">
+                        <div class="action-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                                <path d="M9 11H15M9 15H15M17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3H12.5858C12.851 3 13.1054 3.10536 13.2929 3.29289L19.7071 9.70711C19.8946 9.89464 20 10.149 20 10.4142V19C20 20.1046 19.1046 21 18 21H17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="action-shortcut">F2</div>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Kelola Pesanan</div>
+                        <div class="action-desc">Lihat, update status, dan kelola semua pesanan pelanggan</div>
+                        <div class="action-features">
+                            <span class="feature-tag">📋 Daftar Order</span>
+                            <span class="feature-tag">🔄 Update Status</span>
+                            <span class="feature-tag">👥 Data Pelanggan</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-card warning" onclick="showSection('menu')">
+                    <div class="action-header">
+                        <div class="action-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="action-shortcut">F3</div>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Lihat Menu</div>
+                        <div class="action-desc">Daftar lengkap menu dengan harga dan kategori</div>
+                        <div class="action-features">
+                            <span class="feature-tag">🍽️ Semua Menu</span>
+                            <span class="feature-tag">🏷️ Kategori</span>
+                            <span class="feature-tag">💰 Harga</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-card info" onclick="showSection('reports')">
+                    <div class="action-header">
+                        <div class="action-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                                <path d="M3 3V21H21M7 14L12 9L16 13L21 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="7" cy="14" r="1" fill="currentColor"/>
+                                <circle cx="12" cy="9" r="1" fill="currentColor"/>
+                                <circle cx="16" cy="13" r="1" fill="currentColor"/>
+                                <circle cx="21" cy="8" r="1" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <div class="action-shortcut">F4</div>
+                    </div>
+                    <div class="action-content">
+                        <div class="action-title">Laporan Kasir</div>
+                        <div class="action-desc">Laporan penjualan, statistik, dan analisis performa</div>
+                        <div class="action-features">
+                            <span class="feature-tag">📈 Grafik</span>
+                            <span class="feature-tag">📊 Statistik</span>
+                            <span class="feature-tag">📋 Transaksi</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content Sections -->
+        <section id="posSection" class="content-section" style="display: none;">
+            <div class="section-header">
+                <h2>🛒 Point of Sale</h2>
+                <button class="btn-back" onclick="showSection('dashboard')">← Kembali</button>
+            </div>
+            <div class="pos-container">
+                <div class="menu-selection">
+                    <h3>Pilih Menu</h3>
+                    <div class="menu-grid" id="posMenuGrid">
+                        <!-- Menu items will be loaded here -->
+                    </div>
+                </div>
+                <div class="order-summary">
+                    <h3>Pesanan</h3>
+                    <div class="order-items" id="orderItems">
+                        <p class="empty-order">Belum ada item dipilih</p>
+                    </div>
+                    <div class="order-total">
+                        <div class="total-line">
+                            <span>Total:</span>
+                            <span id="orderTotal">Rp 0</span>
+                        </div>
+                    </div>
+                    <div class="order-actions">
+                        <button class="btn-clear" onclick="clearOrder()">Bersihkan</button>
+                        <button class="btn-process" onclick="processOrder()">Proses Pesanan</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ordersSection" class="content-section" style="display: none;">
+            <div class="section-header">
+                <h2>📋 Kelola Pesanan</h2>
+                <button class="btn-back" onclick="showSection('dashboard')">← Kembali</button>
+            </div>
+            <div class="orders-container">
+                <div class="orders-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No. Pesanan</th>
+                                <th>Pelanggan</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Waktu</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <tr>
+                                <td colspan="7">Memuat data pesanan...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="menuSection" class="content-section" style="display: none;">
+            <div class="section-header">
+                <h2>🍽️ Daftar Menu</h2>
+                <button class="btn-back" onclick="showSection('dashboard')">← Kembali</button>
+            </div>
+            <div class="menu-container">
+                <div class="menu-filters">
+                    <button class="filter-btn active" onclick="filterMenu('all')">Semua</button>
+                    <button class="filter-btn" onclick="filterMenu('makanan')">Makanan</button>
+                    <button class="filter-btn" onclick="filterMenu('minuman')">Minuman</button>
+                    <button class="filter-btn" onclick="filterMenu('snack')">Snack</button>
+                </div>
+                <div class="menu-grid" id="menuGrid">
+                    <!-- Menu items will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <section id="reportsSection" class="content-section" style="display: none;">
+            <div class="section-header">
+                <h2>📈 Laporan Kasir</h2>
+                <button class="btn-back" onclick="showSection('dashboard')">← Kembali</button>
+            </div>
+            <div class="reports-container">
+                <div class="report-cards">
+                    <div class="report-card">
+                        <h3>Penjualan Hari Ini</h3>
+                        <div class="report-value" id="reportTodaySales">Rp 0</div>
+                        <div class="report-change">+0% dari kemarin</div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Total Transaksi</h3>
+                        <div class="report-value" id="reportTodayTransactions">0</div>
+                        <div class="report-change">transaksi hari ini</div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Menu Terlaris</h3>
+                        <div class="report-value" id="reportTopMenu">-</div>
+                        <div class="report-change">hari ini</div>
+                    </div>
+                </div>
+                <div class="recent-transactions">
+                    <h3>Transaksi Terbaru</h3>
+                    <div class="transactions-list" id="recentTransactionsList">
+                        <p>Belum ada transaksi hari ini</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Scripts -->
+    <script src="kasir-script.js"></script>
+</body>
+</html>

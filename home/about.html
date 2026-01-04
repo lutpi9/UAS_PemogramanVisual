@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - LupyCanteen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style-clean-v2.css?v=20250101-CLEAN-FINAL-V3">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🍱</span>
+                <span class="logo-text">LupyCanteen</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="main-app.html" class="nav-link">Beranda</a></li>
+                <li><a href="menu-rapi-clean.html" class="nav-link">Menu</a></li>
+                <li><a href="special.html" class="nav-link">Special</a></li>
+                <li><a href="about.html" class="nav-link active">Tentang</a></li>
+                <li><a href="contact.html" class="nav-link">Kontak</a></li>
+            </ul>
+            <div class="nav-cta">
+                <button class="cart-btn" onclick="window.location.href='main-app.html'">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V17C17 18.1 16.1 19 15 19H9C7.9 19 7 18.1 7 17V13M9 22C9.6 22 10 21.6 10 21S9.6 20 9 20 8 20.4 8 21 8.4 22 9 22ZM20 22C20.6 22 21 21.6 21 21S20.6 20 20 20 19 20.4 19 21 19.4 22 20 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="btn-order" onclick="window.location.href='menu-rapi.html'">Pesan Sekarang</button>
+                <button class="btn-logout" onclick="logoutUser()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M6 14H3C2.44772 14 2 13.5523 2 13V3C2 2.44772 2.44772 2 3 2H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M11 11L14 8L11 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 8H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Hero -->
+    <section class="hero" style="min-height: 70vh;">
+        <div class="hero-background"></div>
+        <div class="container">
+            <div class="hero-content-center">
+                <div class="hero-text-center">
+                    <div class="hero-badge-wrapper">
+                        <span class="hero-badge" style="font-size: 1.1rem; padding: 0.75rem 1.5rem;">🏫 Tentang Kami</span>
+                    </div>
+                    <h1 class="hero-title-center" style="font-size: 3rem; margin-bottom: 1.5rem;">
+                        Selamat Datang di<br>
+                        <span class="gradient-text">LupyCanteen</span>
+                    </h1>
+                    <p class="hero-description-center" style="font-size: 1.3rem; line-height: 1.7; max-width: 700px; margin: 0 auto;">
+                        Kantin sekolah modern yang mengutamakan kualitas, kebersihan, dan kepuasan siswa dengan menu lezat dan bergizi setiap hari.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story -->
+    <section class="section">
+        <div class="container">
+            <div class="special-content">
+                <div class="special-text" style="width: 100%; max-width: none; text-align: center;">
+                    <span class="section-badge" style="font-size: 1.1rem;">Cerita Kami</span>
+                    <h2 class="section-title" style="font-size: 2.5rem; margin-bottom: 2rem;">Perjalanan <span class="gradient-text">LupyCanteen</span></h2>
+                    <div style="max-width: 800px; margin: 0 auto;">
+                        <p class="special-description" style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 1.5rem; text-align: left;">
+                            LupyCanteen didirikan pada tahun 2020 dengan visi menjadi kantin sekolah terbaik yang menyediakan makanan sehat, lezat, dan terjangkau untuk para siswa. Kami memulai dengan tim kecil yang berdedikasi untuk menghadirkan pengalaman kuliner terbaik di lingkungan sekolah.
+                        </p>
+                        <p class="special-description" style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 0; text-align: left;">
+                            Dengan komitmen terhadap kualitas dan inovasi, kami terus berkembang dan kini melayani lebih dari 1000 siswa setiap harinya dengan berbagai pilihan menu yang selalu fresh dan bergizi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Values -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge" style="font-size: 1.1rem;">Nilai-Nilai Kami</span>
+                <h2 class="section-title" style="font-size: 2.5rem; margin-bottom: 2rem;">Yang Kami <span class="gradient-text">Junjung Tinggi</span></h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card" style="padding: 2rem;">
+                    <div class="feature-icon" style="font-size: 3rem; margin-bottom: 1.5rem;">🥗</div>
+                    <h3 class="feature-title" style="font-size: 1.4rem; margin-bottom: 1rem;">Kualitas Terjamin</h3>
+                    <p class="feature-description" style="font-size: 1.1rem; line-height: 1.6;">Menggunakan bahan-bahan segar dan berkualitas tinggi untuk setiap hidangan yang kami sajikan.</p>
+                </div>
+                <div class="feature-card" style="padding: 2rem;">
+                    <div class="feature-icon" style="font-size: 3rem; margin-bottom: 1.5rem;">🧼</div>
+                    <h3 class="feature-title" style="font-size: 1.4rem; margin-bottom: 1rem;">Kebersihan Utama</h3>
+                    <p class="feature-description" style="font-size: 1.1rem; line-height: 1.6;">Menjaga standar kebersihan tertinggi dalam proses memasak dan penyajian makanan.</p>
+                </div>
+                <div class="feature-card" style="padding: 2rem;">
+                    <div class="feature-icon" style="font-size: 3rem; margin-bottom: 1.5rem;">⚡</div>
+                    <h3 class="feature-title" style="font-size: 1.4rem; margin-bottom: 1rem;">Pelayanan Cepat</h3>
+                    <p class="feature-description" style="font-size: 1.1rem; line-height: 1.6;">Melayani dengan cepat dan efisien agar siswa tidak terlambat kembali ke kelas.</p>
+                </div>
+                <div class="feature-card" style="padding: 2rem;">
+                    <div class="feature-icon" style="font-size: 3rem; margin-bottom: 1.5rem;">💰</div>
+                    <h3 class="feature-title" style="font-size: 1.4rem; margin-bottom: 1rem;">Harga Terjangkau</h3>
+                    <p class="feature-description" style="font-size: 1.1rem; line-height: 1.6;">Menyediakan makanan berkualitas dengan harga yang ramah di kantong siswa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <span class="logo-icon" style="font-size: 2rem;">🍱</span>
+                    <span class="logo-text" style="font-size: 1.5rem;">LupyCanteen</span>
+                </div>
+                <p class="footer-description" style="font-size: 1.1rem; line-height: 1.6; margin-top: 1rem;">
+                    Kantin sekolah terbaik dengan menu lezat dan bergizi untuk mendukung aktivitas belajarmu.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-title" style="font-size: 1.3rem; margin-bottom: 1rem;">Menu</h4>
+                <ul class="footer-links">
+                    <li><a href="menu-rapi-clean.html" style="font-size: 1.1rem;">Makanan</a></li>
+                    <li><a href="menu-rapi-clean.html" style="font-size: 1.1rem;">Minuman</a></li>
+                    <li><a href="menu-rapi-clean.html" style="font-size: 1.1rem;">Snack</a></li>
+                    <li><a href="special.html" style="font-size: 1.1rem;">Menu Spesial</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-title" style="font-size: 1.3rem; margin-bottom: 1rem;">Informasi</h4>
+                <ul class="footer-links">
+                    <li><a href="about.html" style="font-size: 1.1rem;">Tentang Kami</a></li>
+                    <li><a href="contact.html" style="font-size: 1.1rem;">Kontak</a></li>
+                    <li><a href="#" style="font-size: 1.1rem;">Jam Operasional</a></li>
+                    <li><a href="#" style="font-size: 1.1rem;">Kebijakan</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4 class="footer-title" style="font-size: 1.3rem; margin-bottom: 1rem;">Jam Buka</h4>
+                <p class="footer-hours" style="font-size: 1.1rem; line-height: 1.6;">Senin - Jumat: 07:00 - 15:00</p>
+                <p class="footer-hours" style="font-size: 1.1rem; line-height: 1.6;">Sabtu: 07:00 - 12:00</p>
+                <p class="footer-hours" style="font-size: 1.1rem; line-height: 1.6;">Minggu: Tutup</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p style="font-size: 1rem;">&copy; 2025 LupyCanteen. Dibuat dengan ❤️ untuk siswa-siswi tercinta.</p>
+        </div>
+    </footer>
+
+    <!-- Logout functionality -->
+    <script>
+        // Logout function - RENAMED TO AVOID CONFLICT WITH SCRIPT.JS
+        function logoutUser() {
+            console.log('🚪 LogoutUser function called from About page');
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                console.log('✅ User confirmed logout');
+                localStorage.removeItem('lupycanteen_user');
+                sessionStorage.removeItem('lupycanteen_user');
+                console.log('🗑️ User data cleared from storage');
+                alert('Logout berhasil!');
+                setTimeout(() => {
+                    console.log('🔄 Redirecting to login page...');
+                    window.location.href = 'index.html';
+                }, 1000);
+            } else {
+                console.log('❌ User cancelled logout');
+            }
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 About page loaded');
+        });
+    </script>
+</body>
+</html>

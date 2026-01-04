@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LupyCanteen - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #A8D8EA 0%, #FFB3D9 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            font-size: 48px;
+        }
+
+        .logo-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .welcome-text {
+            margin-bottom: 30px;
+        }
+
+        .welcome-text h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .welcome-text p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .login-form {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #A8D8EA;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #A8D8EA 0%, #FFB3D9 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+
+
+        .login-footer {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .login-footer a {
+            color: #A8D8EA;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-error {
+            background: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+        }
+
+        .alert-success {
+            background: #efe;
+            color: #3c3;
+            border: 1px solid #cfc;
+        }
+
+        .features {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .features h3 {
+            color: white;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .feature-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <span class="logo-icon">🍱</span>
+            <span class="logo-text">LupyCanteen</span>
+        </div>
+        
+        <div class="welcome-text">
+            <h1>Selamat Datang!</h1>
+            <p>Silakan login untuk mengakses sistem LupyCanteen</p>
+        </div>
+
+        <div class="alert alert-error" id="errorAlert"></div>
+        <div class="alert alert-success" id="successAlert"></div>
+
+        <form id="loginForm" class="login-form" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="rememberMe">
+                <label for="rememberMe">Ingat saya</label>
+            </div>
+
+            <button type="submit" class="btn-login" id="loginBtn">
+                <span id="loginText">Masuk ke LupyCanteen</span>
+                <div id="loginSpinner" class="spinner" style="display: none;"></div>
+            </button>
+        </form>
+
+
+
+        <div class="login-footer">
+            <p>Belum punya akun? <a href="#" onclick="showRegisterInfo()">Hubungi Admin</a></p>
+        </div>
+    </div>
+
+    <!-- Features Section (Outside container) -->
+    <div class="features">
+        <h3>✨ Fitur LupyCanteen</h3>
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon">🍽️</div>
+                <div class="feature-text">Menu Lengkap</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🛒</div>
+                <div class="feature-text">Shopping Cart</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">📊</div>
+                <div class="feature-text">Admin Dashboard</div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">📱</div>
+                <div class="feature-text">Mobile Friendly</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5283/api';
+
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const userData = localStorage.getItem('lupycanteen_user') || sessionStorage.getItem('lupycanteen_user');
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    showAlert('success', 'Anda sudah login sebagai ' + user.fullName + '. Mengalihkan...');
+                    setTimeout(() => {
+                        window.location.href = 'main-app.html';
+                    }, 1500);
+                } catch (error) {
+                    localStorage.removeItem('lupycanteen_user');
+                    sessionStorage.removeItem('lupycanteen_user');
+                }
+            }
+        });
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            const loginBtn = document.getElementById('loginBtn');
+            const loginText = document.getElementById('loginText');
+            const loginSpinner = document.getElementById('loginSpinner');
+            
+            // Show loading
+            loginBtn.disabled = true;
+            loginText.style.display = 'none';
+            loginSpinner.style.display = 'block';
+            hideAlerts();
+            
+            try {
+                // Check hardcoded credentials first
+                let user = null;
+                let loginSuccess = false;
+                
+                if (username === 'admin1' && password === 'admin123') {
+                    user = {
+                        id: 'admin1',
+                        username: 'admin1',
+                        fullName: 'Admin LupyCanteen',
+                        email: 'admin@lupycanteen.com',
+                        role: 'Admin',
+                        createdAt: new Date().toISOString()
+                    };
+                    loginSuccess = true;
+                } else if (username === 'kasir1' && password === 'kasir123') {
+                    user = {
+                        id: 'kasir1',
+                        username: 'kasir1',
+                        fullName: 'Kasir LupyCanteen',
+                        email: 'kasir@lupycanteen.com',
+                        role: 'Kasir',
+                        createdAt: new Date().toISOString()
+                    };
+                    loginSuccess = true;
+                } else if (username === 'user1' && password === 'user123') {
+                    user = {
+                        id: 'user1',
+                        username: 'user1',
+                        fullName: 'User LupyCanteen',
+                        email: 'user@lupycanteen.com',
+                        role: 'User',
+                        phone: '081234567890',
+                        createdAt: new Date().toISOString()
+                    };
+                    loginSuccess = true;
+                }
+                
+                if (loginSuccess) {
+                    // Save login data
+                    if (rememberMe) {
+                        localStorage.setItem('lupycanteen_user', JSON.stringify(user));
+                    } else {
+                        sessionStorage.setItem('lupycanteen_user', JSON.stringify(user));
+                    }
+                    
+                    showAlert('success', 'Login berhasil! Selamat datang ' + user.fullName + '. Mengalihkan...');
+                    
+                    // Redirect based on role
+                    setTimeout(() => {
+                        if (user.role === 'Admin') {
+                            window.location.href = 'home/admin-dashboard.html';
+                        } else if (user.role === 'Kasir') {
+                            window.location.href = 'kasir/kasir-dashboard.html';
+                        } else if (user.role === 'User') {
+                            window.location.href = 'user/user-dashboard.html';
+                        } else {
+                            window.location.href = 'main-app.html';
+                        }
+                    }, 1500);
+                    
+                } else {
+                    // Try API authentication as fallback
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ username, password })
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            const apiUser = result.data;
+                            
+                            // Save login data
+                            if (rememberMe) {
+                                localStorage.setItem('lupycanteen_user', JSON.stringify(apiUser));
+                            } else {
+                                sessionStorage.setItem('lupycanteen_user', JSON.stringify(apiUser));
+                            }
+                            
+                            showAlert('success', 'Login berhasil! Selamat datang ' + apiUser.fullName + '. Mengalihkan...');
+                            
+                            // Redirect to main app
+                            setTimeout(() => {
+                                window.location.href = 'main-app.html';
+                            }, 1500);
+                            
+                        } else {
+                            showAlert('error', 'Username atau password salah');
+                        }
+                    } catch (apiError) {
+                        showAlert('error', 'Username atau password salah');
+                        console.error('Login error:', apiError);
+                    }
+                }
+            } catch (error) {
+                showAlert('error', 'Username atau password salah');
+                console.error('Login error:', error);
+            } finally {
+                loginBtn.disabled = false;
+                loginText.style.display = 'block';
+                loginSpinner.style.display = 'none';
+            }
+        }
+
+        function showRegisterInfo() {
+            showAlert('info', 'Untuk membuat akun baru, silakan hubungi administrator sistem.');
+        }
+
+        // Direct login functions for kasir and user
+        function directKasirLogin() {
+            console.log('🚀 Direct kasir login initiated...');
+            
+            // Create kasir user data
+            const kasirUser = {
+                id: 'kasir1',
+                username: 'kasir1',
+                fullName: 'Kasir Demo',
+                email: 'kasir@lupycanteen.com',
+                role: 'Kasir',
+                createdAt: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('lupycanteen_user', JSON.stringify(kasirUser));
+            
+            showAlert('success', 'Login kasir berhasil! Mengalihkan ke dashboard kasir...');
+            
+            // Redirect to kasir dashboard
+            setTimeout(() => {
+                window.location.href = 'kasir/kasir-dashboard.html';
+            }, 1500);
+        }
+
+        function directUserLogin() {
+            console.log('🚀 Direct user login initiated...');
+            
+            // Create user data
+            const userData = {
+                id: 'user1',
+                username: 'user1',
+                fullName: 'User Demo',
+                email: 'user@lupycanteen.com',
+                role: 'User',
+                phone: '081234567890',
+                createdAt: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('lupycanteen_user', JSON.stringify(userData));
+            
+            showAlert('success', 'Login user berhasil! Mengalihkan ke dashboard user...');
+            
+            // Redirect to user dashboard
+            setTimeout(() => {
+                window.location.href = 'user/user-dashboard.html';
+            }, 1500);
+        }
+
+        function showAlert(type, message) {
+            hideAlerts();
+            const alert = document.getElementById(type === 'error' ? 'errorAlert' : 'successAlert');
+            alert.textContent = message;
+            alert.style.display = 'block';
+        }
+
+        function hideAlerts() {
+            document.getElementById('errorAlert').style.display = 'none';
+            document.getElementById('successAlert').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

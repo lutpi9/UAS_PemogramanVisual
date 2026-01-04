@@ -1,0 +1,80 @@
+/* ==================== HOMEPAGE MENU CARDS - UKURAN DIPERKECIL ==================== */
+
+/* Override ukuran menu cards di halaman beranda */
+.homepage-menu-card {
+    height: 320px !important; /* Diperbesar dari 260px ke 320px */
+}
+
+.menu-image-container {
+    height: 200px !important; /* Diperbesar dari 150px ke 200px */
+}
+
+.menu-content {
+    padding: 12px !important; /* Dikurangi dari 16px ke 12px */
+}
+
+.menu-title {
+    font-size: 1rem !important; /* Dikurangi dari 1.1rem ke 1rem */
+    margin: 0 0 6px 0 !important; /* Dikurangi margin */
+}
+
+.menu-description {
+    font-size: 0.8rem !important; /* Dikurangi dari 0.85rem ke 0.8rem */
+    margin-bottom: 12px !important; /* Dikurangi dari 16px ke 12px */
+    line-height: 1.3 !important;
+}
+
+.menu-price {
+    font-size: 1rem !important; /* Dikurangi dari 1.1rem ke 1rem */
+}
+
+.btn-add, .btn-edit {
+    width: 28px !important; /* Dikurangi dari 32px ke 28px */
+    height: 28px !important; /* Dikurangi dari 32px ke 28px */
+}
+
+/* Responsive untuk menu cards yang diperkecil */
+@media (max-width: 968px) {
+    .homepage-menu-card {
+        height: 300px !important;
+    }
+    
+    .menu-image-container {
+        height: 180px !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .homepage-menu-card {
+        height: 280px !important;
+        min-height: 280px !important;
+    }
+    
+    .menu-image-container {
+        height: 160px !important;
+    }
+    
+    .menu-content {
+        padding: 10px !important;
+    }
+}
+
+/* Perkecil gap antar menu cards */
+.homepage-menu-grid {
+    gap: 16px !important; /* Dikurangi dari 20px ke 16px */
+}
+
+/* Perkecil padding section menu */
+.menu {
+    padding: 4rem 2rem !important; /* Dikurangi dari default */
+}
+
+@media (max-width: 640px) {
+    .menu {
+        padding: 3rem 1rem !important;
+    }
+    
+    .homepage-menu-grid {
+        gap: 12px !important;
+    }
+}
