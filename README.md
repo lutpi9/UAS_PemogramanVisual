@@ -7,7 +7,7 @@
 | **Kelas** | TI.23.A.5 |
 | **Mata Kuliah** | Pemrograman Visual (Desktop) |
 | **Proyek** | Ujian Akhir Semester (UAS) |
-| **Link YouTube** | https://youtu.be/bF75aXlileI?si=GmsStKTdxpMt-KCK |
+| **Link YouTube** | tunggu ya |
 
 # 🍽️ LupyCanteen
 ### Web-Based Canteen Management System
